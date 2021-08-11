@@ -1,10 +1,10 @@
 <template>
-  <div class="layout">
+  <div class="add-product-container">
     <Card
       class="main-container"
       :style="{
-        minHeight: '1024px',
-        minWidth: '1100px',
+        minHeight: '100vh',
+        width: '100%',
         background: '#F8F9FA'
       }"
     >
@@ -91,18 +91,6 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-.layout {
-  max-width: 1440px;
-  border: 1px solid #d7dde4;
-  background: #f5f7f9;
-  position: relative;
-  border-radius: 4px;
-  overflow: hidden;
-}
-.layout-header-bar {
-  background: #fff;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-}
 .small-card {
   min-width: 330px;
   min-height: 184px;
@@ -130,9 +118,6 @@ export default {
   border-radius: 20px;
   background-color: #fff;
 }
-.main-container >>> .ivu-card-body {
-  padding: 25px;
-}
 .table-hearder {
   font-size: 18px;
   padding: 10px 0;
@@ -150,5 +135,8 @@ export default {
 }
 .table-content {
   padding: 20px 10px 0 10px;
+}
+.add-product-container >>> .ivu-card-bordered {
+  border: none;
 }
 </style>
