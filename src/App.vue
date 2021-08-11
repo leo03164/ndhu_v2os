@@ -7,23 +7,25 @@
             <Menu active-name="1-2" theme="dark" width="auto" class="menu-item">
               <MenuItem name="1-1">
                 <Icon type="ios-navigate"></Icon>
-                <router-link to="/about">Option</router-link>
+                <router-link to="/admin/product/create">新增商品</router-link>
               </MenuItem>
               <MenuItem name="1-2">
                 <Icon type="ios-search"></Icon>
-                <span>Option 2</span>
+                <router-link to="/admin/product/create">新增經銷商</router-link>
               </MenuItem>
               <MenuItem name="1-3">
                 <Icon type="ios-settings"></Icon>
-                <span>Option 3</span>
+                <router-link to="/admin/product/ban">黑名單</router-link>
               </MenuItem>
             </Menu>
             <div slot="trigger"></div>
           </Sider>
         </div>
-        <Layout>
-          <router-view />
-        </Layout>
+        <div class="content-container">
+          <Layout>
+            <router-view />
+          </Layout>
+        </div>
       </Layout>
     </div>
   </div>
