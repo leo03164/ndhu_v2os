@@ -11,7 +11,9 @@
               </MenuItem>
               <MenuItem name="1-2">
                 <Icon type="ios-search"></Icon>
-                <router-link to="/admin/product/create">新增經銷商</router-link>
+                <router-link to="/admin/distributor/create"
+                  >新增經銷商</router-link
+                >
               </MenuItem>
               <MenuItem name="1-3">
                 <Icon type="ios-settings"></Icon>
