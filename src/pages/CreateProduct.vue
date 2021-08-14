@@ -39,11 +39,12 @@
           <Col span="4" class="table-content">{{ shoes.made }}</Col>
           <Col span="4" class="table-content">{{ shoes.date }}</Col>
         </Row>
-        <Row class="table-content-container">
-          <Col span="2">
-            <Icon type="md-add-circle" size="64" @click="addCount" />
-          </Col>
-        </Row>
+        <Icon
+          type="md-add-circle"
+          class="add-icon"
+          size="64"
+          @click="toggoleFormShow"
+        />
       </div>
     </Card>
   </div>
@@ -74,12 +75,13 @@ export default {
           title: "Selled",
           number: 20
         }
-      ]
+      ],
+      isFormShow: false
     };
   },
   methods: {
-    addCount() {
-      this.cardData[1].number++;
+    toggoleFormShow() {
+      this.isFormShow = !this.isFormShow;
     }
   },
   components: { SmallCard }
@@ -118,5 +120,15 @@ export default {
 }
 .add-product-container >>> .ivu-card-bordered {
   border: none;
+}
+.add-icon {
+  position: fixed;
+  bottom: 10px;
+  right: 30px;
+  opacity: 0.5;
+}
+.add-icon:hover {
+  transition: all 0.2s ease-in-out;
+  opacity: 1;
 }
 </style>
