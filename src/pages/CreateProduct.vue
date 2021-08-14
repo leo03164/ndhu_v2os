@@ -9,32 +9,13 @@
       }"
     >
       <div class="card-group">
-        <div class="small-card">
-          <div class="small-card-title">
-            Total
-          </div>
-          <div class="small-card-content">
-            100
-          </div>
-        </div>
-        <div class="small-card">
-          <div class="small-card-title">
-            New
-          </div>
-          <div class="small-card-content">
-            {{ count }}
-          </div>
-        </div>
-        <div class="small-card">
-          <div class="small-card-title">
-            Selled
-          </div>
-          <div class="small-card-content">
-            20
-          </div>
-        </div>
+        <SmallCard
+          :title="card.title"
+          :number="card.number"
+          v-for="(card, index) in cardData"
+          :key="index"
+        ></SmallCard>
       </div>
-
       <div class="table-card">
         <Row>
           <Col span="2" class="table-hearder"></Col>
@@ -46,7 +27,7 @@
         </Row>
         <Row
           class="table-content-container"
-          v-for="index in count"
+          v-for="index in cardData[1].number"
           :key="index"
         >
           <Col span="2">
@@ -68,6 +49,8 @@
   </div>
 </template>
 <script>
+import SmallCard from "@/components/SmallCard.vue";
+
 export default {
   data() {
     return {
@@ -78,38 +61,35 @@ export default {
         made: "Taiwan",
         date: "2020-03-16"
       },
-      count: 5
+      cardData: [
+        {
+          title: "Total",
+          number: 100
+        },
+        {
+          title: "New",
+          number: 5
+        },
+        {
+          title: "Selled",
+          number: 20
+        }
+      ]
     };
   },
   methods: {
     addCount() {
-      this.count++;
+      this.cardData[1].number++;
     }
   },
-  component: {}
+  components: { SmallCard }
 };
 </script>
 
 <style lang="postcss" scoped>
-.small-card {
-  min-width: 330px;
-  min-height: 184px;
-  border-radius: 30px;
-  background-color: #fff;
-}
 .card-group {
   display: flex;
   justify-content: space-between;
-}
-.small-card-title {
-  font-size: 24px;
-  color: #a9a9a9;
-  margin: 0.75rem 0 0 2rem;
-}
-.small-card-content {
-  font-size: 64px;
-  color: #000000;
-  text-align: center;
 }
 .table-card {
   min-width: 1050px;
