@@ -36,9 +36,15 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      contractInstance: {}
+    };
   },
-  computed: {}
+  computed: {},
+  async created() {
+    this.contractInstance = await this.$contract.init();
+    console.log(this.contractInstance);
+  }
 };
 </script>
 
