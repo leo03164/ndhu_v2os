@@ -10,7 +10,8 @@
     "core-js": "^2.6.5",
     "view-design": "^4.6.1",
     "vue": "^2.6.10",
-    "vue-router": "^3.0.3"
+    "vue-router": "^3.0.3",
+    "web3": "^1.5.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0",
