@@ -16,6 +16,7 @@
           :key="index"
         ></SmallCard>
       </div>
+
       <div class="table-card">
         <Row>
           <Col span="2" class="table-hearder"></Col>
@@ -39,6 +40,8 @@
           <Col span="4" class="table-content">{{ shoes.made }}</Col>
           <Col span="4" class="table-content">{{ shoes.date }}</Col>
         </Row>
+        <CreateNewProduct v-if="isFormShow"></CreateNewProduct>
+
         <Icon
           type="md-add-circle"
           class="add-icon"
@@ -51,6 +54,7 @@
 </template>
 <script>
 import SmallCard from "@/components/SmallCard.vue";
+import CreateNewProduct from "@/components/CreateNewProduct.vue";
 
 export default {
   data() {
@@ -69,7 +73,7 @@ export default {
         },
         {
           title: "New",
-          number: 5
+          number: 10
         },
         {
           title: "Selled",
@@ -84,7 +88,7 @@ export default {
       this.isFormShow = !this.isFormShow;
     }
   },
-  components: { SmallCard }
+  components: { SmallCard, CreateNewProduct }
 };
 </script>
 
