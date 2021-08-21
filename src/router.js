@@ -15,12 +15,12 @@ export default new Router({
     },
     {
       path: '/admin/product/create',
-      name: 'create',      
+      name: 'CreateProduct',      
       component: () => import(/* webpackChunkName: "about" */ './pages/CreateProduct')
     },
     {
       path: '/admin/distributor/create',
-      name: 'create',      
+      name: 'CreateDistributor',      
       component: () => import(/* webpackChunkName: "about" */ './pages/CreateDistributor')
     }
   ]
