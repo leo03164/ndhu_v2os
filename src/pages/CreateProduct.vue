@@ -40,7 +40,10 @@
           <Col span="4" class="table-content">{{ shoes.made }}</Col>
           <Col span="4" class="table-content">{{ shoes.date }}</Col>
         </Row>
-        <CreateNewProduct v-if="isFormShow"></CreateNewProduct>
+        <CreateNewProduct
+          v-if="isFormShow"
+          @close="isFormShow = false"
+        ></CreateNewProduct>
 
         <Icon
           type="md-add-circle"

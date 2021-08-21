@@ -41,7 +41,7 @@
         <FormItem>
           <div class="button-group">
             <Button type="primary" @click="createProduct">Submit</Button>
-            <Button style="margin-left: 8px">Cancel</Button>
+            <Button style="margin-left: 8px" @click="cancel">Cancel</Button>
           </div>
         </FormItem>
       </div>
@@ -83,10 +83,13 @@ export default {
           this.formItem.date
         )
         .send({ from: "0x4a9A76338844B9124e2aE4237ee40Db95452fe22" });
+    },
+    async cancel() {
+      this.$emit("close");
     }
   },
   async created() {
-    // wait metamask update
+    // wait metamask update call->ok send->can't
     this.contract = await this.$contract.init();
     const accounts = await web3.eth.getAccounts();
     this.contract.options.gas = "30000";
