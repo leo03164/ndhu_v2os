@@ -55,7 +55,7 @@
 <script>
 import SmallCard from "@/components/SmallCard.vue";
 import CreateNewProduct from "@/components/CreateNewProduct.vue";
-import { mapState, mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -89,9 +89,6 @@ export default {
     toggoleFormShow() {
       this.isFormShow = !this.isFormShow;
     }
-  },
-  computed: {
-    ...mapState(["ipfs"])
   },
   components: { SmallCard, CreateNewProduct },
   async created() {

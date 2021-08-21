@@ -15,10 +15,9 @@ const store = new Vuex.Store({
     },
     actions: {
         async initIPFS({ commit }) {
-            const init = await IPFS.create()
+            const init = await IPFS.create();            
             commit('setIPFS', init);
         }
     }
-
 })
 export default store;
