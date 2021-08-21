@@ -6,13 +6,15 @@
       v-if="isUploadShow"
       class="input-bg"
     />
-    <img v-if="image" :src="image" class="upload-image-container" alt="not" />
+    <img :src="getImg" class="upload-image-container" alt="not" />
     <!-- <button @click="upload">
       Upload
     </button> -->
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
+
 export default {
   data() {
     return {
@@ -20,22 +22,33 @@ export default {
       isUploadShow: true
     };
   },
+  computed: {
+    ...mapState(["ipfs"]),
+    getImg() {
+      return this.image;
+    }
+  },
   methods: {
-    fileSelected(e) {
+    async fileSelected(e) {
       const file = e.target.files.item(0);
       const reader = new FileReader();
-      reader.addEventListener("load", this.imageLoaded);
-      reader.readAsDataURL(file);
-      this.isUploadShow = !this.isUploadShow;
+
+      reader.addEventListener("load", this.imageLoaded, false);
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
     },
-    imageLoaded(e) {
-      console.log(e.target.result);
-      this.image = e.target.result;
+    async imageLoaded(reader) {
+      // convert image file to base64 string
+      this.isUploadShow = !this.isUploadShow;
+      this.image = reader.explicitOriginalTarget.result;
+      const result = await this.ipfs.add(reader.explicitOriginalTarget.result);
+
+      // @todo can't return too large file need to fix
+      // this.image = `https://ipfs.io/ipfs/${result.path}`;
+      console.log(result.path);
     }
-    // upload() {
-    //   // 用base64字串的方式上傳
-    //   axios.post("/upload", { image: this.image });
-    // }
   }
 };
 </script>
