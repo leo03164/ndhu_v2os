@@ -232,7 +232,7 @@ contract kernel {
     function addShoesDistributor(address targetAddress) public isShoesManager {
         require(
             shoesDistributors[targetAddress] == false,
-            "Target is already a Distributors"
+            "Target is already a Distributor"
         );
 
         shoesDistributors[targetAddress] = true;
@@ -279,14 +279,13 @@ contract kernel {
     }
 
     // this function is called when buyer buy the shoes
-    function setShoesRandomValue(bytes32 shoesId, string memory randomValue)
+    // rv need to hash before input into contract or everybody will know the rv
+    function setShoesRandomValue(bytes32 shoesId, bytes32 randomValueHash)
         public
         isDistributor(msg.sender)
         isShoesCanSell(shoesId)
-        returns (bytes32)
     {
-        randomValueOfShoes[shoesId] = keccak256(abi.encodePacked(randomValue));
-        return randomValueOfShoes[shoesId];
+        randomValueOfShoes[shoesId] = randomValueHash;
     }
 
     // ------------ distributor code end ------------
@@ -311,6 +310,10 @@ contract kernel {
             return true;
         }
         return false;
+    }
+
+    function getByte32Hash(string memory temp) public pure returns (bytes32) {
+        return keccak256(abi.encodePacked(temp));
     }
 
     // ------------ buyer code end ------------
