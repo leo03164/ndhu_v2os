@@ -2,7 +2,7 @@
   <div class="createFormContainer">
     <Form :model="formItem" :label-width="80">
       <div class="upload-container">
-        <Upload @imgPath="setImageIpfsPath"></Upload>
+        <ProductImageUpload @imgPath="setImageIpfsPath"></ProductImageUpload>
       </div>
       <div class="input-form">
         <FormItem label="SN">
@@ -51,7 +51,7 @@
 <script>
 import company from "../shoes/company.json";
 import contry from "../shoes/country.json";
-import Upload from "./Upload.vue";
+import ProductImageUpload from "./ProductImageUpload.vue";
 import { mapState } from "vuex";
 
 export default {
@@ -72,7 +72,7 @@ export default {
     ...mapState(["contract"])
   },
   components: {
-    Upload
+    ProductImageUpload
   },
   methods: {
     async createProduct() {
@@ -98,13 +98,6 @@ export default {
       this.imgPath = path;
       console.log(path);
     }
-  },
-  async created() {
-    // wait metamask update call->ok send->can't
-    // this.contract = await this.$contract.init();
-    // const accounts = await web3.eth.getAccounts();
-    // this.contract.options.gas = "30000";
-    // web3.eth.Contract.defaultAccount = accounts[0];
   }
 };
 </script>

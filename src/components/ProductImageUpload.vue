@@ -20,7 +20,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["ipfs", "contract"]),
+    ...mapState(["ipfs"]),
     getImg() {
       return this.image;
     }
@@ -45,7 +45,6 @@ export default {
 
       // @todo can't return too large file need to fix
       // this.image = `https://ipfs.io/ipfs/${result.path}`;
-      // console.log(result.path);
     }
   }
 };

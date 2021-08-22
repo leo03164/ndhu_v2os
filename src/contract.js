@@ -1,5 +1,6 @@
 const Web3 = require("web3");
 
+// check user already install metamask plugin
 if (typeof web3 !== "undefined") {
   web3 = new Web3(web3.currentProvider);
 } else {
@@ -932,9 +933,11 @@ export default {
 	abi,
 	provider,
 	async init() {
+		// if user have metamask access it
 		if (window.ethereum) {
 			await ethereum.enable();
 			provider = web3.currentProvider;
+			web3.setProvider(provider);
 		}
         return new web3.eth.Contract(
             abi,

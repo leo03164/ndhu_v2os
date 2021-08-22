@@ -9,12 +9,12 @@
       }"
     >
       <div class="card-group">
-        <SmallCard
+        <ProductSmallCard
           :title="card.title"
           :number="card.number"
           v-for="(card, index) in cardData"
           :key="index"
-        ></SmallCard>
+        ></ProductSmallCard>
       </div>
 
       <div class="table-card">
@@ -40,10 +40,10 @@
           <Col span="4" class="table-content">{{ shoes.made }}</Col>
           <Col span="4" class="table-content">{{ shoes.date }}</Col>
         </Row>
-        <CreateNewProduct
+        <CreateNewProductCard
           v-if="isFormShow"
           @close="isFormShow = false"
-        ></CreateNewProduct>
+        ></CreateNewProductCard>
 
         <Icon
           type="md-add-circle"
@@ -56,8 +56,8 @@
   </div>
 </template>
 <script>
-import SmallCard from "@/components/SmallCard.vue";
-import CreateNewProduct from "@/components/CreateNewProduct.vue";
+import ProductSmallCard from "@/components/ProductSmallCard.vue";
+import CreateNewProductCard from "@/components/CreateNewProductCard.vue";
 import { mapActions } from "vuex";
 
 export default {
@@ -93,7 +93,7 @@ export default {
       this.isFormShow = !this.isFormShow;
     }
   },
-  components: { SmallCard, CreateNewProduct },
+  components: { ProductSmallCard, CreateNewProductCard },
   async created() {
     await this.initIPFS();
     await this.initContract();
