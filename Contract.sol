@@ -84,6 +84,15 @@ contract kernel {
         shoesManagers[targetAddress] = true;
     }
 
+    function delShoesManager(address targetAddress) public isContractOwner {
+        require(
+            shoesManagers[targetAddress] == true,
+            "target is not a manager"
+        );
+
+        shoesManagers[targetAddress] = false;
+    }
+
     // ------------ manager code start ------------
     // managers usually are sub-company
     modifier isShoesManager() {
@@ -227,6 +236,15 @@ contract kernel {
         );
 
         shoesDistributors[targetAddress] = true;
+    }
+
+    function delShoesDistributor(address targetAddress) public isShoesManager {
+        require(
+            shoesDistributors[targetAddress] == true,
+            "Target is not a Distributor"
+        );
+
+        shoesDistributors[targetAddress] = false;
     }
 
     modifier isDistributor(address target) {
