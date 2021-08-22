@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import IPFS from 'ipfs-core';
 import Contract from './contract';
+import Web3 from 'web3';
 
 Vue.use(Vuex);
 
@@ -16,6 +17,9 @@ const store = new Vuex.Store({
         },
         setContractInstance(state, payload) {
             state.contract = payload;
+        },
+        setContractCurrentAccount(state, payload) {
+            state.contract.options.from = payload;
         }
     },
     actions: {
@@ -26,6 +30,11 @@ const store = new Vuex.Store({
         async initContract({ commit }) {
             const init = await Contract.init();
             commit('setContractInstance', init);
+
+            const account = await web3.eth.getAccounts();
+            commit('setContractCurrentAccount', account[0]);
+
+            console.log('Current Contract Account is: ', account[0]);
         }
     }
 })
