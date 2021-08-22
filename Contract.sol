@@ -63,6 +63,9 @@ contract kernel {
     // use unique id to mapping product
     mapping(bytes32 => Shoes) public shoesList;
 
+    // use id to mapping product image
+    mapping(bytes32 => string) public shoesImgs;
+
     // shoesManager === sub-company
     mapping(address => bool) public shoesManagers;
 
@@ -123,7 +126,6 @@ contract kernel {
         bytes32 uniqueId = getShoesIdByShoesAttribute(_SN, _name, _company);
 
         // check shoes is exist
-
         require(shoesList[uniqueId].bornDate == 0, "Shose is already exist");
 
         // init
@@ -137,6 +139,13 @@ contract kernel {
         shoesList[uniqueId] = newShoes;
         shoesCount++;
         emit addShoesEvent(uniqueId, msg.sender);
+    }
+
+    function addShoesImg(bytes32 shoesId, string memory path)
+        public
+        isShoesManager
+    {
+        shoesImgs[shoesId] = path;
     }
 
     modifier isShoesExist(bytes32 shoesId) {
