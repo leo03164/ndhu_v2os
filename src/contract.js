@@ -6,883 +6,935 @@ if (typeof web3 !== "undefined") {
   alert("Can Not Find Metamsk!");
 }
 
-const contractAddress = "0x39Ff75444b98e34251b14a60f0734af7AEFdD2e1";
+const contractAddress = "0xD65563B3E805FA70890D8914FeAe3b683489c1B1";
 const abi = [
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": false,
-					"internalType": "bytes32",
-					"name": "id",
-					"type": "bytes32"
-				},
-				{
-					"indexed": false,
-					"internalType": "address",
-					"name": "who",
-					"type": "address"
-				}
-			],
-			"name": "addShoesEvent",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": false,
-					"internalType": "bytes32",
-					"name": "id",
-					"type": "bytes32"
-				},
-				{
-					"indexed": false,
-					"internalType": "address",
-					"name": "manager",
-					"type": "address"
-				},
-				{
-					"indexed": false,
-					"internalType": "string",
-					"name": "reason",
-					"type": "string"
-				}
-			],
-			"name": "addShoesToBlackListEvent",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": false,
-					"internalType": "bytes32",
-					"name": "id",
-					"type": "bytes32"
-				},
-				{
-					"indexed": false,
-					"internalType": "address",
-					"name": "who",
-					"type": "address"
-				},
-				{
-					"indexed": false,
-					"internalType": "string",
-					"name": "reason",
-					"type": "string"
-				}
-			],
-			"name": "delShoesEvent",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": false,
-					"internalType": "bytes32",
-					"name": "id",
-					"type": "bytes32"
-				},
-				{
-					"indexed": false,
-					"internalType": "uint32",
-					"name": "newBornDate",
-					"type": "uint32"
-				},
-				{
-					"indexed": false,
-					"internalType": "address",
-					"name": "who",
-					"type": "address"
-				}
-			],
-			"name": "modifyShoesBornDateEvent",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": false,
-					"internalType": "bytes32",
-					"name": "id",
-					"type": "bytes32"
-				},
-				{
-					"indexed": false,
-					"internalType": "string",
-					"name": "newBornFrom",
-					"type": "string"
-				},
-				{
-					"indexed": false,
-					"internalType": "address",
-					"name": "who",
-					"type": "address"
-				}
-			],
-			"name": "modifyShoesBornFromEvent",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": false,
-					"internalType": "bytes32",
-					"name": "id",
-					"type": "bytes32"
-				},
-				{
-					"indexed": false,
-					"internalType": "string",
-					"name": "newCompany",
-					"type": "string"
-				},
-				{
-					"indexed": false,
-					"internalType": "address",
-					"name": "who",
-					"type": "address"
-				}
-			],
-			"name": "modifyShoesCompanyEvent",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": false,
-					"internalType": "bytes32",
-					"name": "id",
-					"type": "bytes32"
-				},
-				{
-					"indexed": false,
-					"internalType": "string",
-					"name": "newName",
-					"type": "string"
-				},
-				{
-					"indexed": false,
-					"internalType": "address",
-					"name": "who",
-					"type": "address"
-				}
-			],
-			"name": "modifyShoesNameEvent",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": false,
-					"internalType": "bytes32",
-					"name": "id",
-					"type": "bytes32"
-				},
-				{
-					"indexed": false,
-					"internalType": "string",
-					"name": "newSN",
-					"type": "string"
-				},
-				{
-					"indexed": false,
-					"internalType": "address",
-					"name": "who",
-					"type": "address"
-				}
-			],
-			"name": "modifyShoesSNEvent",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": false,
-					"internalType": "bytes32",
-					"name": "id",
-					"type": "bytes32"
-				},
-				{
-					"indexed": false,
-					"internalType": "address",
-					"name": "from",
-					"type": "address"
-				},
-				{
-					"indexed": false,
-					"internalType": "address",
-					"name": "to",
-					"type": "address"
-				},
-				{
-					"indexed": false,
-					"internalType": "string",
-					"name": "location",
-					"type": "string"
-				}
-			],
-			"name": "transferShoesEvent",
-			"type": "event"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "string",
-					"name": "_SN",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "_name",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "_company",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "_bornFrom",
-					"type": "string"
-				},
-				{
-					"internalType": "uint32",
-					"name": "_bornDate",
-					"type": "uint32"
-				}
-			],
-			"name": "addShoes",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "targetAddress",
-					"type": "address"
-				}
-			],
-			"name": "addShoesDistributor",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "targetAddress",
-					"type": "address"
-				}
-			],
-			"name": "addShoesManager",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "bytes32",
-					"name": "targetId",
-					"type": "bytes32"
-				},
-				{
-					"internalType": "string",
-					"name": "reason",
-					"type": "string"
-				}
-			],
-			"name": "addToBlackList",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "bytes32",
-					"name": "shoesId",
-					"type": "bytes32"
-				}
-			],
-			"name": "buyShoesFromProxy",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "bytes32",
-					"name": "shoesId",
-					"type": "bytes32"
-				}
-			],
-			"name": "cancelOrderByBuyer",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "bytes32",
-					"name": "shoesId",
-					"type": "bytes32"
-				}
-			],
-			"name": "confirmOrder",
-			"outputs": [],
-			"stateMutability": "payable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "bytes32",
-					"name": "shoesId",
-					"type": "bytes32"
-				},
-				{
-					"internalType": "string",
-					"name": "reason",
-					"type": "string"
-				}
-			],
-			"name": "delShoes",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "bytes32",
-					"name": "shoesId",
-					"type": "bytes32"
-				},
-				{
-					"internalType": "address",
-					"name": "distributor",
-					"type": "address"
-				}
-			],
-			"name": "empowerShoesToDistributor",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "uint32",
-					"name": "_bornDate",
-					"type": "uint32"
-				},
-				{
-					"internalType": "bytes32",
-					"name": "shoesId",
-					"type": "bytes32"
-				}
-			],
-			"name": "modifyShoesBornDate",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "string",
-					"name": "_bornFrom",
-					"type": "string"
-				},
-				{
-					"internalType": "bytes32",
-					"name": "shoesId",
-					"type": "bytes32"
-				}
-			],
-			"name": "modifyShoesBornFrom",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "string",
-					"name": "_company",
-					"type": "string"
-				},
-				{
-					"internalType": "bytes32",
-					"name": "shoesId",
-					"type": "bytes32"
-				}
-			],
-			"name": "modifyShoesCompany",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "string",
-					"name": "_name",
-					"type": "string"
-				},
-				{
-					"internalType": "bytes32",
-					"name": "shoesId",
-					"type": "bytes32"
-				}
-			],
-			"name": "modifyShoesName",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "string",
-					"name": "_SN",
-					"type": "string"
-				},
-				{
-					"internalType": "bytes32",
-					"name": "shoesId",
-					"type": "bytes32"
-				}
-			],
-			"name": "modifyShoesSN",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "bytes32",
-					"name": "shoesId",
-					"type": "bytes32"
-				}
-			],
-			"name": "payForShoes",
-			"outputs": [],
-			"stateMutability": "payable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "bytes32",
-					"name": "shoesId",
-					"type": "bytes32"
-				},
-				{
-					"internalType": "string",
-					"name": "randomValue",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "location",
-					"type": "string"
-				}
-			],
-			"name": "registerShoes",
-			"outputs": [
-				{
-					"internalType": "bool",
-					"name": "",
-					"type": "bool"
-				}
-			],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "bytes32",
-					"name": "shoesId",
-					"type": "bytes32"
-				},
-				{
-					"internalType": "string",
-					"name": "reason",
-					"type": "string"
-				}
-			],
-			"name": "reportOrder",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "bytes32",
-					"name": "shoesId",
-					"type": "bytes32"
-				},
-				{
-					"internalType": "string",
-					"name": "randomValue",
-					"type": "string"
-				}
-			],
-			"name": "setShoesRandomValue",
-			"outputs": [
-				{
-					"internalType": "bytes32",
-					"name": "",
-					"type": "bytes32"
-				}
-			],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "bytes32",
-					"name": "shoesId",
-					"type": "bytes32"
-				},
-				{
-					"internalType": "address payable",
-					"name": "buyer",
-					"type": "address"
-				},
-				{
-					"internalType": "string",
-					"name": "location",
-					"type": "string"
-				}
-			],
-			"name": "transferShoesByOwner",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "bytes32",
-					"name": "shoesId",
-					"type": "bytes32"
-				},
-				{
-					"internalType": "uint64",
-					"name": "price",
-					"type": "uint64"
-				},
-				{
-					"internalType": "string",
-					"name": "location",
-					"type": "string"
-				}
-			],
-			"name": "transferShoesToContract",
-			"outputs": [
-				{
-					"internalType": "bool",
-					"name": "",
-					"type": "bool"
-				}
-			],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"stateMutability": "nonpayable",
-			"type": "constructor"
-		},
-		{
-			"inputs": [],
-			"name": "agent",
-			"outputs": [
-				{
-					"internalType": "address",
-					"name": "",
-					"type": "address"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"name": "contractOwner",
-			"outputs": [
-				{
-					"internalType": "address",
-					"name": "",
-					"type": "address"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "target",
-					"type": "address"
-				}
-			],
-			"name": "getAddressBalance",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"name": "getContractBalance",
-			"outputs": [
-				{
-					"internalType": "uint256",
-					"name": "",
-					"type": "uint256"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "string",
-					"name": "SN",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "name",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "company",
-					"type": "string"
-				}
-			],
-			"name": "getShoesIdByShoesAttribute",
-			"outputs": [
-				{
-					"internalType": "bytes32",
-					"name": "",
-					"type": "bytes32"
-				}
-			],
-			"stateMutability": "pure",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "bytes32",
-					"name": "shoesId",
-					"type": "bytes32"
-				}
-			],
-			"name": "getShoesOwnersHistory",
-			"outputs": [
-				{
-					"internalType": "address[]",
-					"name": "",
-					"type": "address[]"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "bytes32",
-					"name": "",
-					"type": "bytes32"
-				}
-			],
-			"name": "randomValueOfShoes",
-			"outputs": [
-				{
-					"internalType": "bytes32",
-					"name": "",
-					"type": "bytes32"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"name": "shoesCount",
-			"outputs": [
-				{
-					"internalType": "uint64",
-					"name": "",
-					"type": "uint64"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "",
-					"type": "address"
-				}
-			],
-			"name": "shoesDistributors",
-			"outputs": [
-				{
-					"internalType": "bool",
-					"name": "",
-					"type": "bool"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "bytes32",
-					"name": "",
-					"type": "bytes32"
-				}
-			],
-			"name": "shoesList",
-			"outputs": [
-				{
-					"internalType": "string",
-					"name": "SN",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "name",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "company",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "bornFrom",
-					"type": "string"
-				},
-				{
-					"internalType": "uint32",
-					"name": "bornDate",
-					"type": "uint32"
-				},
-				{
-					"internalType": "enum kernel.State",
-					"name": "state",
-					"type": "uint8"
-				},
-				{
-					"internalType": "address",
-					"name": "agent",
-					"type": "address"
-				},
-				{
-					"internalType": "address",
-					"name": "owner",
-					"type": "address"
-				},
-				{
-					"internalType": "address",
-					"name": "buyer",
-					"type": "address"
-				},
-				{
-					"internalType": "string",
-					"name": "lastBuyerLocation",
-					"type": "string"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "",
-					"type": "address"
-				}
-			],
-			"name": "shoesManagers",
-			"outputs": [
-				{
-					"internalType": "bool",
-					"name": "",
-					"type": "bool"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "bytes32",
-					"name": "",
-					"type": "bytes32"
-				}
-			],
-			"name": "shoesPrice",
-			"outputs": [
-				{
-					"internalType": "uint64",
-					"name": "",
-					"type": "uint64"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		}
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bytes32",
+				"name": "id",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "who",
+				"type": "address"
+			}
+		],
+		"name": "addShoesEvent",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bytes32",
+				"name": "id",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "manager",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "reason",
+				"type": "string"
+			}
+		],
+		"name": "addShoesToBlackListEvent",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bytes32",
+				"name": "id",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "who",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "reason",
+				"type": "string"
+			}
+		],
+		"name": "delShoesEvent",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bytes32",
+				"name": "id",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "newBornDate",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "who",
+				"type": "address"
+			}
+		],
+		"name": "modifyShoesBornDateEvent",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bytes32",
+				"name": "id",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "newBornFrom",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "who",
+				"type": "address"
+			}
+		],
+		"name": "modifyShoesBornFromEvent",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bytes32",
+				"name": "id",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "newCompany",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "who",
+				"type": "address"
+			}
+		],
+		"name": "modifyShoesCompanyEvent",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bytes32",
+				"name": "id",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "newName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "who",
+				"type": "address"
+			}
+		],
+		"name": "modifyShoesNameEvent",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bytes32",
+				"name": "id",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "newSN",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "who",
+				"type": "address"
+			}
+		],
+		"name": "modifyShoesSNEvent",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bytes32",
+				"name": "id",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "location",
+				"type": "string"
+			}
+		],
+		"name": "transferShoesEvent",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_CID",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_SN",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_company",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_bornFrom",
+				"type": "string"
+			}
+		],
+		"name": "addShoes",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "targetAddress",
+				"type": "address"
+			}
+		],
+		"name": "addShoesDistributor",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "targetAddress",
+				"type": "address"
+			}
+		],
+		"name": "addShoesManager",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "targetId",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "string",
+				"name": "reason",
+				"type": "string"
+			}
+		],
+		"name": "addToBlackList",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "agent",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			}
+		],
+		"name": "buyShoesFromProxy",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			}
+		],
+		"name": "cancelOrderByBuyer",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			}
+		],
+		"name": "confirmOrder",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "contractOwner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "string",
+				"name": "reason",
+				"type": "string"
+			}
+		],
+		"name": "delShoes",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "targetAddress",
+				"type": "address"
+			}
+		],
+		"name": "delShoesDistributor",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "targetAddress",
+				"type": "address"
+			}
+		],
+		"name": "delShoesManager",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "address",
+				"name": "distributor",
+				"type": "address"
+			}
+		],
+		"name": "empowerShoesToDistributor",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "target",
+				"type": "address"
+			}
+		],
+		"name": "getAddressBalance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "temp",
+				"type": "string"
+			}
+		],
+		"name": "getByte32Hash",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getContractBalance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "SN",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "company",
+				"type": "string"
+			}
+		],
+		"name": "getShoesIdByShoesAttribute",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			}
+		],
+		"name": "getShoesOwnersHistory",
+		"outputs": [
+			{
+				"internalType": "address[]",
+				"name": "",
+				"type": "address[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_bornDate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			}
+		],
+		"name": "modifyShoesBornDate",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_bornFrom",
+				"type": "string"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			}
+		],
+		"name": "modifyShoesBornFrom",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_company",
+				"type": "string"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			}
+		],
+		"name": "modifyShoesCompany",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			}
+		],
+		"name": "modifyShoesName",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_SN",
+				"type": "string"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			}
+		],
+		"name": "modifyShoesSN",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			}
+		],
+		"name": "payForShoes",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"name": "randomValueOfShoes",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "string",
+				"name": "randomValue",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "location",
+				"type": "string"
+			}
+		],
+		"name": "registerShoes",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "string",
+				"name": "reason",
+				"type": "string"
+			}
+		],
+		"name": "reportOrder",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "randomValueHash",
+				"type": "bytes32"
+			}
+		],
+		"name": "setShoesRandomValue",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "shoesCount",
+		"outputs": [
+			{
+				"internalType": "uint64",
+				"name": "",
+				"type": "uint64"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "shoesDistributors",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"name": "shoesList",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "CID",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "SN",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "company",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "bornFrom",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "bornDate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "enum kernel.State",
+				"name": "state",
+				"type": "uint8"
+			},
+			{
+				"internalType": "address",
+				"name": "agent",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "buyer",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "lastBuyerLocation",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "shoesManagers",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"name": "shoesPrice",
+		"outputs": [
+			{
+				"internalType": "uint64",
+				"name": "",
+				"type": "uint64"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "address payable",
+				"name": "buyer",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "location",
+				"type": "string"
+			}
+		],
+		"name": "transferShoesByOwner",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint64",
+				"name": "price",
+				"type": "uint64"
+			},
+			{
+				"internalType": "string",
+				"name": "location",
+				"type": "string"
+			}
+		],
+		"name": "transferShoesToContract",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
 ];
-
+let provider;
 export default {	
 	contractAddress,
 	abi,
+	provider,
 	async init() {
 		if (window.ethereum) {
 			await ethereum.enable();
+			provider = web3.currentProvider;
 		}
         return new web3.eth.Contract(
             abi,
