@@ -88,7 +88,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["initIPFS"]),
+    ...mapActions(["initIPFS", "initContract"]),
     toggoleFormShow() {
       this.isFormShow = !this.isFormShow;
     }
@@ -96,6 +96,7 @@ export default {
   components: { SmallCard, CreateNewProduct },
   async created() {
     await this.initIPFS();
+    await this.initContract();
   }
 };
 </script>

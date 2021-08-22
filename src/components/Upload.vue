@@ -23,7 +23,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["ipfs"]),
+    ...mapState(["ipfs", "contract"]),
     getImg() {
       return this.image;
     }

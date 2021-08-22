@@ -65,7 +65,8 @@ export default {
         country: "",
         date: 0
       },
-      contract: {}
+      contract: {},
+      imgPath: ""
     };
   },
   components: {
@@ -90,10 +91,10 @@ export default {
   },
   async created() {
     // wait metamask update call->ok send->can't
-    this.contract = await this.$contract.init();
-    const accounts = await web3.eth.getAccounts();
-    this.contract.options.gas = "30000";
-    web3.eth.Contract.defaultAccount = accounts[0];
+    // this.contract = await this.$contract.init();
+    // const accounts = await web3.eth.getAccounts();
+    // this.contract.options.gas = "30000";
+    // web3.eth.Contract.defaultAccount = accounts[0];
   }
 };
 </script>
