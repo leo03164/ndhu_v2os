@@ -18,7 +18,7 @@ contract kernel {
         string name; // 商品名稱
         string company; // 出產公司
         string bornFrom; // 商品產地
-        uint32 bornDate; // 生產時間
+        uint256 bornDate; // 生產時間
         State state; // 紀錄商品狀態
         address agent; // 代理者
         address owner; // 持有者
@@ -40,7 +40,11 @@ contract kernel {
     event modifyShoesNameEvent(bytes32 id, string newName, address who);
     event modifyShoesCompanyEvent(bytes32 id, string newCompany, address who);
     event modifyShoesBornFromEvent(bytes32 id, string newBornFrom, address who);
-    event modifyShoesBornDateEvent(bytes32 id, uint32 newBornDate, address who);
+    event modifyShoesBornDateEvent(
+        bytes32 id,
+        uint256 newBornDate,
+        address who
+    );
 
     // ------------ admin code start ------------
 
@@ -117,8 +121,7 @@ contract kernel {
         string memory _SN,
         string memory _name,
         string memory _company,
-        string memory _bornFrom,
-        uint32 _bornDate
+        string memory _bornFrom
     ) public isShoesManager {
         Shoes memory newShoes;
 
@@ -133,7 +136,7 @@ contract kernel {
         newShoes.name = _name;
         newShoes.company = _company;
         newShoes.bornFrom = _bornFrom;
-        newShoes.bornDate = _bornDate; // block.timestamp;
+        newShoes.bornDate = block.timestamp; // block.timestamp;
         newShoes.state = State.COMING_SOON;
         newShoes.owner = payable(msg.sender);
         shoesList[uniqueId] = newShoes;
@@ -198,7 +201,7 @@ contract kernel {
         );
     }
 
-    function modifyShoesBornDate(uint32 _bornDate, bytes32 shoesId)
+    function modifyShoesBornDate(uint256 _bornDate, bytes32 shoesId)
         public
         isShoesManager
         isShoesExist(shoesId)
