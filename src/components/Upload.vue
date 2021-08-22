@@ -6,10 +6,7 @@
       v-if="isUploadShow"
       class="input-bg"
     />
-    <img :src="getImg" class="upload-image-container" alt="not" />
-    <!-- <button @click="upload">
-      Upload
-    </button> -->
+    <img :src="getImg" class="upload-image-container" v-if="getImg" />
   </div>
 </template>
 <script>
@@ -44,10 +41,11 @@ export default {
       this.isUploadShow = !this.isUploadShow;
       this.image = reader.explicitOriginalTarget.result;
       const result = await this.ipfs.add(reader.explicitOriginalTarget.result);
+      this.$emit("imgPath", result.path);
 
       // @todo can't return too large file need to fix
       // this.image = `https://ipfs.io/ipfs/${result.path}`;
-      console.log(result.path);
+      // console.log(result.path);
     }
   }
 };

@@ -2,7 +2,7 @@
   <div class="createFormContainer">
     <Form :model="formItem" :label-width="80">
       <div class="upload-container">
-        <Upload></Upload>
+        <Upload @imgPath="setImageIpfsPath"></Upload>
       </div>
       <div class="input-form">
         <FormItem label="SN">
@@ -52,6 +52,7 @@
 import company from "../shoes/company.json";
 import contry from "../shoes/country.json";
 import Upload from "./Upload.vue";
+import { mapState } from "vuex";
 
 export default {
   data() {
@@ -62,31 +63,40 @@ export default {
         sn: "",
         name: "",
         company: "",
-        country: "",
-        date: 0
+        country: ""
       },
-      contract: {},
       imgPath: ""
     };
+  },
+  computed: {
+    ...mapState(["contract"])
   },
   components: {
     Upload
   },
   methods: {
     async createProduct() {
-      this.formItem.date = Number(Date.now() % 1000000000);
-      await this.contract.methods
-        .addShoes(
-          this.formItem.sn,
-          this.formItem.name,
-          this.formItem.company,
-          this.formItem.country,
-          this.formItem.date
-        )
-        .send({ from: "0x4a9A76338844B9124e2aE4237ee40Db95452fe22" });
+      try {
+        const shoesId = await this.contract.methods
+          .addShoes(
+            this.imgPath,
+            this.formItem.sn,
+            this.formItem.name,
+            this.formItem.company,
+            this.formItem.country
+          )
+          .send({ type: "0x2" });
+        console.log(shoesId);
+      } catch (error) {
+        console.log(error);
+      }
     },
-    async cancel() {
+    cancel() {
       this.$emit("close");
+    },
+    setImageIpfsPath(path) {
+      this.imgPath = path;
+      console.log(path);
     }
   },
   async created() {
