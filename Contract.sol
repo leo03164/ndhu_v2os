@@ -14,6 +14,7 @@ contract kernel {
     }
 
     struct Shoes {
+        string CID; // 星際網路的編號
         string SN; // 商品編號
         string name; // 商品名稱
         string company; // 出產公司
@@ -67,9 +68,6 @@ contract kernel {
     // use unique id to mapping product
     mapping(bytes32 => Shoes) public shoesList;
 
-    // use id to mapping product image
-    mapping(bytes32 => string) public shoesImgs;
-
     // shoesManager === sub-company
     mapping(address => bool) public shoesManagers;
 
@@ -118,37 +116,33 @@ contract kernel {
     // @todo
     // need to consider duplicate product
     function addShoes(
+        string memory _CID,
         string memory _SN,
         string memory _name,
         string memory _company,
         string memory _bornFrom
-    ) public isShoesManager {
+    ) public isShoesManager returns (bytes32) {
         Shoes memory newShoes;
 
         // use sn, name, company to create unique id
-        bytes32 uniqueId = getShoesIdByShoesAttribute(_SN, _name, _company);
+        bytes32 shoesId = getShoesIdByShoesAttribute(_SN, _name, _company);
 
         // check shoes is exist
-        require(shoesList[uniqueId].bornDate == 0, "Shose is already exist");
+        require(shoesList[shoesId].bornDate == 0, "Shose is already exist");
 
         // init
+        newShoes.CID = _CID;
         newShoes.SN = _SN;
         newShoes.name = _name;
         newShoes.company = _company;
         newShoes.bornFrom = _bornFrom;
-        newShoes.bornDate = block.timestamp; // block.timestamp;
+        newShoes.bornDate = block.timestamp;
         newShoes.state = State.COMING_SOON;
         newShoes.owner = payable(msg.sender);
-        shoesList[uniqueId] = newShoes;
+        shoesList[shoesId] = newShoes;
         shoesCount++;
-        emit addShoesEvent(uniqueId, msg.sender);
-    }
-
-    function addShoesImg(bytes32 shoesId, string memory path)
-        public
-        isShoesManager
-    {
-        shoesImgs[shoesId] = path;
+        emit addShoesEvent(shoesId, msg.sender);
+        return shoesId;
     }
 
     modifier isShoesExist(bytes32 shoesId) {
