@@ -927,6 +927,7 @@ const abi = [
 		"type": "function"
 	}
 ];
+
 let provider;
 export default {	
 	contractAddress,
@@ -943,5 +944,19 @@ export default {
             abi,
             contractAddress
         );
-	}
+	},
+	async subscribeContract() {
+		let logsNum = 0;
+      var subscription = web3.eth
+        .subscribe("logs", {
+          fromBlock: "0x0",
+          toBlock: "latest",
+          address: contractAddress
+        })
+		  .on("data", function (log) {
+			  localStorage.setItem(logsNum++, log.data);
+			  localStorage.setItem('logsNum', logsNum);
+        });
+      console.log(subscription);
+    },
 }

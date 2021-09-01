@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import IPFS from 'ipfs-core';
 import Contract from './contract';
-import Web3 from 'web3';
 
 Vue.use(Vuex);
 
@@ -35,6 +34,9 @@ const store = new Vuex.Store({
             commit('setContractCurrentAccount', account[0]);
 
             console.log('Current Contract Account is: ', account[0]);
+        },
+        async initContractLogs() {
+            await Contract.subscribeContract();
         }
     }
 })
