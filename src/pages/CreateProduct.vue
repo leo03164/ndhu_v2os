@@ -26,19 +26,20 @@
           <Col span="4" class="table-hearder">Made</Col>
           <Col span="4" class="table-hearder">Date</Col>
         </Row>
+        <!-- set productList is computed -->
         <Row
           class="table-content-container"
-          v-for="index in cardData[1].number"
+          v-for="(product, index) in getProductList"
           :key="index"
         >
           <Col span="2">
             <img src="../assets/003.png" class="table-img" alt="" />
           </Col>
-          <Col span="4" class="table-content">{{ shoes.sn }}</Col>
-          <Col span="7" class="table-content">{{ shoes.name }}</Col>
-          <Col span="3" class="table-content">{{ shoes.state }}</Col>
-          <Col span="4" class="table-content">{{ shoes.made }}</Col>
-          <Col span="4" class="table-content">{{ shoes.date }}</Col>
+          <Col span="4" class="table-content">{{ product.SN }}</Col>
+          <Col span="7" class="table-content">{{ product.name }}</Col>
+          <Col span="3" class="table-content">{{ product.state }}</Col>
+          <Col span="4" class="table-content">{{ product.bornFrom }}</Col>
+          <Col span="4" class="table-content">{{ product.bornDate }}</Col>
         </Row>
         <CreateNewProductCard
           v-if="isFormShow"
@@ -58,7 +59,7 @@
 <script>
 import ProductSmallCard from "@/components/ProductSmallCard.vue";
 import CreateNewProductCard from "@/components/CreateNewProductCard.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   data() {
@@ -84,19 +85,66 @@ export default {
           number: 20
         }
       ],
-      isFormShow: false
+      isFormShow: false,
+      decodeInputArr: [
+        {
+          type: "bytes32",
+          name: "id"
+        },
+        {
+          type: "address",
+          name: "who"
+        }
+      ],
+      decodeTopics: [
+        "0x6086c739621021f2c86f8ecdbb2ac8d30a0d87ba5574d12b5c5cadee0cd085de"
+      ],
+      eventLogDataArray: [],
+      productList: [],
+      maxLogs: 0
     };
   },
+  computed: {
+    ...mapState(["contract"]),
+    getProductList() {
+      return this.productList;
+    },
+    getLocalStorageData() {
+      return localStorage.getItem("logsNum");
+    }
+  },
   methods: {
-    ...mapActions(["initIPFS", "initContract"]),
-    toggoleFormShow() {
+    ...mapActions(["initIPFS", "initContract", "initContractLogs"]),
+    async toggoleFormShow() {
       this.isFormShow = !this.isFormShow;
+    },
+    //bytes32 id, address who
+    async parserLog() {
+      let i;
+      const maxLogs = localStorage.getItem("logsNum");
+      for (i = 0; i < maxLogs; i += 1) {
+        const { id } = await web3.eth.abi.decodeLog(
+          this.decodeInputArr,
+          localStorage.getItem(i),
+          this.decodeTopics
+        );
+        const {
+          SN,
+          name,
+          state,
+          bornFrom,
+          bornDate
+        } = await this.contract.methods.shoesList(id).call();
+        this.productList.push({ SN, name, state, bornFrom, bornDate });
+      }
     }
   },
   components: { ProductSmallCard, CreateNewProductCard },
   async created() {
     await this.initIPFS();
     await this.initContract();
+    await this.initContractLogs();
+    await this.parserLog();
   }
 };
 </script>
