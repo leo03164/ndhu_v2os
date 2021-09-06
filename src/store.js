@@ -33,7 +33,7 @@ const store = new Vuex.Store({
             const account = await web3.eth.getAccounts();
             commit('setContractCurrentAccount', account[0]);
 
-            console.log('Current Contract Account is: ', account[0]);
+            console.log('Current Account is: ', account[0]);
         },
         async initContractLogs() {
             await Contract.subscribeContract();
