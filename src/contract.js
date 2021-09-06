@@ -7,7 +7,7 @@ if (typeof web3 !== "undefined") {
   alert("Can Not Find Metamsk!");
 }
 
-const contractAddress = "0xD65563B3E805FA70890D8914FeAe3b683489c1B1";
+const contractAddress = "0x4694e73D733Ef047422B95a0cde38EC05c790A42";
 const abi = [
 	{
 		"inputs": [],
@@ -945,6 +945,7 @@ export default {
             contractAddress
         );
 	},
+	// listener blockchain event from 0x0 to latest
 	async subscribeContract() {
 		let logsNum = 0;
       var subscription = web3.eth
@@ -954,6 +955,7 @@ export default {
           address: contractAddress
         })
 		  .on("data", function (log) {
+			  // record event data to localstorage
 			  localStorage.setItem(logsNum++, log.data);
 			  localStorage.setItem('logsNum', logsNum);
         });

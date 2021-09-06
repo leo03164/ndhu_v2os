@@ -2,7 +2,9 @@
   <div class="createFormContainer">
     <Form :model="formItem" :label-width="80">
       <div class="upload-container">
-        <ProductImageUpload @imgPath="setImageIpfsPath"></ProductImageUpload>
+        <ProductImageUpload
+          @setImageIpfsPath="setImageIpfsPath"
+        ></ProductImageUpload>
       </div>
       <div class="input-form">
         <FormItem label="SN">
@@ -77,6 +79,7 @@ export default {
   methods: {
     async createProduct() {
       try {
+        // set type 0x2 because of EIP1599
         const shoesId = await this.contract.methods
           .addShoes(
             this.imgPath,
@@ -86,7 +89,7 @@ export default {
             this.formItem.country
           )
           .send({ type: "0x2" });
-        console.log(shoesId);
+        console.log("ShoesId: ", shoesId);
       } catch (error) {
         console.log(error);
       }
@@ -96,8 +99,10 @@ export default {
     },
     setImageIpfsPath(path) {
       this.imgPath = path;
-      console.log(path);
     }
+  },
+  destroyed() {
+    window.localStorage.clear();
   }
 };
 </script>

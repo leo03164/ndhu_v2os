@@ -33,7 +33,11 @@
           :key="index"
         >
           <Col span="2">
-            <img src="../assets/003.png" class="table-img" alt="" />
+            <img
+              :src="`https://ipfs.io/ipfs/${product.CID}`"
+              class="table-img"
+              alt=""
+            />
           </Col>
           <Col span="4" class="table-content">{{ product.SN }}</Col>
           <Col span="7" class="table-content">{{ product.name }}</Col>
@@ -54,6 +58,10 @@
         />
       </div>
     </Card>
+    <img
+      src="https://ipfs.io/ipfs/QmYpgd9PYbfSKP5ey5deMEHSWyDvrr4KgeJ8zu2xrSP1r4"
+      alt=""
+    />
   </div>
 </template>
 <script>
@@ -64,13 +72,6 @@ import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
-      shoes: {
-        sn: "410421283",
-        name: "Nike Air Force 1 GORE-TEX",
-        state: "Comming",
-        made: "Taiwan",
-        date: "2020-03-16"
-      },
       cardData: [
         {
           title: "Total",
@@ -105,7 +106,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["contract"]),
+    ...mapState(["contract", "ipfs"]),
     getProductList() {
       return this.productList;
     },
@@ -118,24 +119,30 @@ export default {
     async toggoleFormShow() {
       this.isFormShow = !this.isFormShow;
     },
-    //bytes32 id, address who
+
+    // parser log from blockchain event
     async parserLog() {
       let i;
       const maxLogs = localStorage.getItem("logsNum");
+
+      // decode data from localstorage
       for (i = 0; i < maxLogs; i += 1) {
         const { id } = await web3.eth.abi.decodeLog(
           this.decodeInputArr,
           localStorage.getItem(i),
           this.decodeTopics
         );
+
+        // get data from id by contract methods
         const {
+          CID,
           SN,
           name,
           state,
           bornFrom,
           bornDate
         } = await this.contract.methods.shoesList(id).call();
-        this.productList.push({ SN, name, state, bornFrom, bornDate });
+        this.productList.push({ CID, SN, name, state, bornFrom, bornDate });
       }
     }
   },

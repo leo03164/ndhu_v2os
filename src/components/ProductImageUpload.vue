@@ -6,7 +6,7 @@
       v-if="isUploadShow"
       class="input-bg"
     />
-    <img :src="getImg" class="upload-image-container" v-if="getImg" />
+    <img :src="getImg" class="upload-image-container" v-show="getImg" />
   </div>
 </template>
 <script>
@@ -38,10 +38,11 @@ export default {
     },
     async imageLoaded(reader) {
       // convert image file to base64 string
-      this.isUploadShow = !this.isUploadShow;
+      this.isUploadShow = false;
       this.image = reader.explicitOriginalTarget.result;
       const result = await this.ipfs.add(reader.explicitOriginalTarget.result);
-      this.$emit("imgPath", result.path);
+      await this.ipfs.pin.add(result.path);
+      this.$emit("setImageIpfsPath", result.path);
 
       // @todo can't return too large file need to fix
       // this.image = `https://ipfs.io/ipfs/${result.path}`;
