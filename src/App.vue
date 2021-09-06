@@ -6,8 +6,8 @@
           <Sider breakpoint="md" collapsible :width="340" class="aside-navbar">
             <Menu active-name="1-2" theme="dark" width="auto" class="menu-item">
               <MenuItem name="1-1">
-                <Icon type="ios-navigate"></Icon>
-                <router-link to="/admin/product/create">新增商品</router-link>
+                <Icon type="ios-settings"></Icon>
+                <router-link to="/admin/manager/create">新增管理員</router-link>
               </MenuItem>
               <MenuItem name="1-2">
                 <Icon type="ios-search"></Icon>
@@ -16,6 +16,10 @@
                 >
               </MenuItem>
               <MenuItem name="1-3">
+                <Icon type="ios-navigate"></Icon>
+                <router-link to="/admin/product/create">新增商品</router-link>
+              </MenuItem>
+              <MenuItem name="1-4">
                 <Icon type="ios-settings"></Icon>
                 <router-link to="/admin/product/ban">黑名單</router-link>
               </MenuItem>

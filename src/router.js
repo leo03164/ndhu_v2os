@@ -16,6 +16,11 @@ export default new Router({
       path: '/admin/distributor/create',
       name: 'CreateDistributor',      
       component: () => import(/* webpackChunkName: "about" */ './pages/CreateDistributor')
+    },
+    {
+      path: '/admin/manager/create',
+      name: 'AddManager',      
+      component: () => import(/* webpackChunkName: "about" */ './pages/AddManager')
     }
   ]
 })
