@@ -28,6 +28,14 @@ contract kernel {
         address[] ownerHistory; // 持有者歷史
     }
 
+    struct Manager {
+        string UID; // 公司編號
+        address chainAddress; // 區塊鏈位址
+        string country; // 隸屬國家
+        uint256 bornDate; // 新增時間
+        bool isBan; // 是否被禁用
+    }
+
     event addShoesEvent(bytes32 id, address who);
     event delShoesEvent(bytes32 id, address who, string reason);
     event transferShoesEvent(
@@ -68,8 +76,8 @@ contract kernel {
     // use unique id to mapping product
     mapping(bytes32 => Shoes) public shoesList;
 
-    // shoesManager === sub-company
-    mapping(address => bool) public shoesManagers;
+    // use unique id to mapping manager shoesManager === sub-company
+    mapping(address => Manager) public managerList;
 
     // shoesDistributor === distributor
     mapping(address => bool) public shoesDistributors;
@@ -80,28 +88,43 @@ contract kernel {
     }
 
     // headquarters can assign management to its sub-company
-    function addShoesManager(address targetAddress) public isContractOwner {
+    function addShoesManager(
+        string memory _UID,
+        address _targetAddress,
+        string memory _country
+    ) public isContractOwner {
         require(
-            shoesManagers[targetAddress] == false,
+            managerList[_targetAddress].bornDate == 0,
             "target is already a manager"
         );
+        Manager memory shoesManager;
+        shoesManager.UID = _UID;
+        shoesManager.chainAddress = _targetAddress;
+        shoesManager.country = _country;
+        shoesManager.bornDate = block.timestamp;
+        shoesManager.isBan = false;
 
-        shoesManagers[targetAddress] = true;
+        managerList[_targetAddress] = shoesManager;
     }
 
     function delShoesManager(address targetAddress) public isContractOwner {
         require(
-            shoesManagers[targetAddress] == true,
+            (managerList[targetAddress].isBan == false &&
+                managerList[targetAddress].bornDate > 0),
             "target is not a manager"
         );
 
-        shoesManagers[targetAddress] = false;
+        managerList[targetAddress].isBan = true;
     }
 
     // ------------ manager code start ------------
     // managers usually are sub-company
     modifier isShoesManager() {
-        require(shoesManagers[msg.sender], "You are not shoes manager");
+        require(
+            (managerList[msg.sender].bornDate > 0 &&
+                managerList[msg.sender].isBan == false),
+            "You are not shoes manager"
+        );
         _;
     }
 
@@ -113,8 +136,6 @@ contract kernel {
         return keccak256(abi.encodePacked(SN, name, company));
     }
 
-    // @todo
-    // need to consider duplicate product
     function addShoes(
         string memory _CID,
         string memory _SN,
@@ -208,8 +229,6 @@ contract kernel {
         );
     }
 
-    // @todo only change state maybe not enough
-    // maybe can write batter
     function delShoes(bytes32 shoesId, string memory reason)
         public
         isShoesManager
