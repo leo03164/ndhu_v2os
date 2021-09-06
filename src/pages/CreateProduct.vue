@@ -9,12 +9,12 @@
       }"
     >
       <div class="card-group">
-        <ProductSmallCard
+        <SmallCard
           :title="card.title"
           :number="card.number"
           v-for="(card, index) in cardData"
           :key="index"
-        ></ProductSmallCard>
+        ></SmallCard>
       </div>
 
       <div class="table-card">
@@ -57,7 +57,7 @@
   </div>
 </template>
 <script>
-import ProductSmallCard from "@/components/ProductSmallCard.vue";
+import SmallCard from "@/components/SmallCard.vue";
 import CreateNewProductCard from "@/components/CreateNewProductCard.vue";
 import { mapActions, mapState } from "vuex";
 
@@ -139,7 +139,7 @@ export default {
       }
     }
   },
-  components: { ProductSmallCard, CreateNewProductCard },
+  components: { SmallCard, CreateNewProductCard },
   async created() {
     await this.initIPFS();
     await this.initContract();
