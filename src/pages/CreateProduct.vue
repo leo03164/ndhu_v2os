@@ -109,9 +109,6 @@ export default {
     ...mapState(["contract", "ipfs"]),
     getProductList() {
       return this.productList;
-    },
-    getLocalStorageData() {
-      return localStorage.getItem("logsNum");
     }
   },
   methods: {
@@ -127,13 +124,21 @@ export default {
 
       // decode data from localstorage
       for (i = 0; i < maxLogs; i += 1) {
+        const logData = JSON.parse(localStorage.getItem(i));
+
+        // check the event that is we want
+        if (!this.decodeTopics.includes(logData.topics)) {
+          continue;
+        }
+
+        // decode event and get product id
         const { id } = await web3.eth.abi.decodeLog(
           this.decodeInputArr,
-          localStorage.getItem(i),
+          logData.data,
           this.decodeTopics
         );
 
-        // get data from id by contract methods
+        // get data detail by contract methods
         const {
           CID,
           SN,
