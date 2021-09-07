@@ -1017,9 +1017,13 @@ export default {
         })
 		  .on("data", function (log) {
 			  // record event data to localstorage
-			  localStorage.setItem(logsNum++, log.data);
+			  const logObject = {}
+			  logObject.data = log.data;
+			  logObject.topics = log.topics;
+
+			  localStorage.setItem(logsNum++, JSON.stringify(logObject));
 			  localStorage.setItem('logsNum', logsNum);
         });
       console.log(subscription);
-    },
+	}
 }
