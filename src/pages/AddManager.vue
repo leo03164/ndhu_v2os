@@ -10,8 +10,7 @@
     >
       <div class="card-group">
         <SmallCard :title="'管理員總數'" :number="100"> </SmallCard>
-
-        <SmallCard :title="'今日新增'" :number="count"> </SmallCard>
+        <SmallCard :title="'今日新增'" :number="managerCount"> </SmallCard>
       </div>
 
       <div class="table-card">
@@ -24,59 +23,109 @@
         </Row>
         <Row
           class="table-content-container"
-          v-for="index in count"
-          :key="index"
+          v-for="(manager, index) in managerList"
+          :key="'manager' + index"
         >
           <Col span="2">
             <img src="../assets/003.png" class="table-img" alt="" />
           </Col>
-          <Col span="4" class="table-content">{{ distributor.id }}</Col>
-          <Col span="7" class="table-content">{{
-            distributor.eth_address
-          }}</Col>
-          <Col span="4" class="table-content">{{ distributor.country }}</Col>
-          <Col span="4" class="table-content">{{ distributor.date }}</Col>
+          <Col span="4" class="table-content">{{ manager.UID }}</Col>
+          <Col span="7" class="table-content">{{ manager.ethAddress }}</Col>
+          <Col span="4" class="table-content">{{ manager.country }}</Col>
+          <Col span="4" class="table-content">{{ manager.bornDate }}</Col>
         </Row>
         <Row class="table-content-container">
           <Col span="2">
-            <Icon type="md-add-circle" size="64" @click="addCount" />
+            <Icon type="md-add-circle" size="64" @click="isFormShow = true" />
           </Col>
         </Row>
       </div>
     </Card>
+
+    <ItemCard v-if="isFormShow" @close="isFormShow = false"></ItemCard>
   </div>
 </template>
 <script>
 import SmallCard from "@/components/SmallCard.vue";
+import ItemCard from "@/components/ItemCard.vue";
+import { mapActions } from "vuex";
 
 export default {
   name: "AddManager",
   data() {
     return {
-      distributor: {
-        id: "610921203",
-        eth_address: "0x4a9A76338844B9124e2aE4237ee40Db95452fe22",
-        state: "checking",
-        country: "Taiwan",
-        date: "2020-03-16"
-      },
-      shoes: {
-        sn: "410421283",
-        name: "Nike Air Force 1 GORE-TEX",
-        state: "Comming",
-        made: "Taiwan",
-        date: "2020-03-16"
-      },
-      count: 5
+      isFormShow: false,
+      managerCount: 0,
+      managerList: [],
+      eventParserMethodSignature: [
+        {
+          type: "string",
+          name: "UID"
+        },
+        {
+          type: "address",
+          name: "manager"
+        },
+        {
+          type: "string",
+          name: "country"
+        },
+        {
+          type: "uint256",
+          name: "bornDate"
+        }
+      ],
+      decodeTopics:
+        "0x78aa96c6058bebd04e5a6e04045c27bb203e090e27a0d222dfcec95ac3f4438f"
     };
   },
   components: {
-    SmallCard
+    SmallCard,
+    ItemCard
   },
   methods: {
-    addCount() {
-      this.count++;
+    ...mapActions(["initIPFS", "initContract", "initContractLogs"]),
+    async parserLog() {
+      let i;
+      const maxLogs = localStorage.getItem("logsNum");
+
+      // decode data from localstorage
+      for (i = 0; i < maxLogs; i += 1) {
+        const logData = JSON.parse(localStorage.getItem(i));
+
+        // check the event that is we want
+        if (!logData.topics.includes(this.decodeTopics)) {
+          continue;
+        }
+
+        // decode event and get product id
+        const {
+          UID,
+          manager,
+          country,
+          bornDate
+        } = await web3.eth.abi.decodeLog(
+          this.eventParserMethodSignature,
+          logData.data,
+          logData.topics
+        );
+
+        const newManager = {};
+        newManager.UID = UID;
+        newManager.ethAddress = manager;
+        newManager.country = country;
+        newManager.bornDate = bornDate;
+
+        this.managerList.push(newManager);
+        this.managerCount++;
+      }
     }
+  },
+  async created() {
+    await this.initIPFS();
+    await this.initContract();
+    await this.initContractLogs();
+    await this.parserLog();
   }
 };
 </script>
