@@ -2,9 +2,7 @@
   <div class="createFormContainer">
     <Form :model="formItem" :label-width="80">
       <div class="upload-container">
-        <ProductImageUpload
-          @setImageIpfsPath="setImageIpfsPath"
-        ></ProductImageUpload>
+        <ImageUpload @setImageIpfsPath="setImageIpfsPath"></ImageUpload>
       </div>
       <div class="input-form">
         <FormItem label="SN">
@@ -53,7 +51,7 @@
 <script>
 import company from "../shoes/company.json";
 import contry from "../shoes/country.json";
-import ProductImageUpload from "./ProductImageUpload.vue";
+import ImageUpload from "./ImageUpload.vue";
 import { mapState } from "vuex";
 
 export default {
@@ -74,7 +72,7 @@ export default {
     ...mapState(["contract"])
   },
   components: {
-    ProductImageUpload
+    ImageUpload
   },
   methods: {
     async createProduct() {
