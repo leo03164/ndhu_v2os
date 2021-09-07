@@ -38,6 +38,12 @@ contract kernel {
 
     event addShoesEvent(bytes32 id, address who);
     event delShoesEvent(bytes32 id, address who, string reason);
+    event addManagerEvent(
+        string UID,
+        address manager,
+        string country,
+        uint256 bornDate
+    );
     event transferShoesEvent(
         bytes32 id,
         address from,
@@ -105,6 +111,12 @@ contract kernel {
         shoesManager.isBan = false;
 
         managerList[_targetAddress] = shoesManager;
+        emit addManagerEvent(
+            shoesManager.UID,
+            shoesManager.chainAddress,
+            shoesManager.country,
+            shoesManager.bornDate
+        );
     }
 
     function delShoesManager(address targetAddress) public isContractOwner {

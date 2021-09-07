@@ -7,12 +7,43 @@ if (typeof web3 !== "undefined") {
   alert("Can Not Find Metamsk!");
 }
 
-const contractAddress = "0x4694e73D733Ef047422B95a0cde38EC05c790A42";
+const contractAddress = "0xa5cc0F1eCc95ACae6451E7a2D26B2dd61ca90b0C";
 const abi = [
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "UID",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "manager",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "country",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "bornDate",
+				"type": "uint256"
+			}
+		],
+		"name": "addManagerEvent",
+		"type": "event"
 	},
 	{
 		"anonymous": false,
@@ -294,9 +325,19 @@ const abi = [
 	{
 		"inputs": [
 			{
+				"internalType": "string",
+				"name": "_UID",
+				"type": "string"
+			},
+			{
 				"internalType": "address",
-				"name": "targetAddress",
+				"name": "_targetAddress",
 				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_country",
+				"type": "string"
 			}
 		],
 		"name": "addShoesManager",
@@ -543,6 +584,45 @@ const abi = [
 				"internalType": "address[]",
 				"name": "",
 				"type": "address[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "managerList",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "UID",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "chainAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "country",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "bornDate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "isBan",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -831,25 +911,6 @@ const abi = [
 				"internalType": "string",
 				"name": "lastBuyerLocation",
 				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "shoesManagers",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
