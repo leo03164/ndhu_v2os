@@ -9,13 +9,13 @@ export default new Router({
   routes: [
     {
       path: '/admin/product/create',
-      name: 'CreateProduct',      
-      component: () => import(/* webpackChunkName: "about" */ './pages/CreateProduct')
+      name: 'AddProduct',      
+      component: () => import(/* webpackChunkName: "about" */ './pages/AddProduct')
     },
     {
       path: '/admin/distributor/create',
-      name: 'CreateDistributor',      
-      component: () => import(/* webpackChunkName: "about" */ './pages/CreateDistributor')
+      name: 'AddDistributor',      
+      component: () => import(/* webpackChunkName: "about" */ './pages/AddDistributor')
     },
     {
       path: '/admin/manager/create',
