@@ -58,10 +58,6 @@
         />
       </div>
     </Card>
-    <img
-      src="https://ipfs.io/ipfs/QmYpgd9PYbfSKP5ey5deMEHSWyDvrr4KgeJ8zu2xrSP1r4"
-      alt=""
-    />
   </div>
 </template>
 <script>
@@ -97,9 +93,8 @@ export default {
           name: "who"
         }
       ],
-      decodeTopics: [
-        "0x6086c739621021f2c86f8ecdbb2ac8d30a0d87ba5574d12b5c5cadee0cd085de"
-      ],
+      decodeTopics:
+        "0x6086c739621021f2c86f8ecdbb2ac8d30a0d87ba5574d12b5c5cadee0cd085de",
       eventLogDataArray: [],
       productList: [],
       maxLogs: 0
@@ -135,7 +130,7 @@ export default {
         const { id } = await web3.eth.abi.decodeLog(
           this.decodeInputArr,
           logData.data,
-          this.decodeTopics
+          logData.topics
         );
 
         // get data detail by contract methods
