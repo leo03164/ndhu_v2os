@@ -122,9 +122,6 @@ export default {
     }
   },
   async created() {
-    await this.initIPFS();
-    await this.initContract();
-    await this.initContractLogs();
     await this.parserLog();
   }
 };

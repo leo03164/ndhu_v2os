@@ -153,9 +153,6 @@ export default {
   },
   components: { SmallCard, CreateNewProductCard },
   async created() {
-    await this.initIPFS();
-    await this.initContract();
-    await this.initContractLogs();
     await this.parserLog();
   }
 };

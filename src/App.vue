@@ -38,12 +38,21 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {};
   },
+  methods: {
+    ...mapActions(["initIPFS", "initContract", "initContractLogs"])
+  },
   computed: {},
-  async created() {}
+  async created() {
+    await this.initIPFS();
+    await this.initContract();
+    await this.initContractLogs();
+  }
 };
 </script>
 
