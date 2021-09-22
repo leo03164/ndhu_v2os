@@ -9,7 +9,7 @@
       }"
     >
       <div class="card-group">
-        <SmallCard :title="'管理員總數'" :number="100"> </SmallCard>
+        <SmallCard :title="'管理員上限'" :number="100"> </SmallCard>
         <SmallCard :title="'今日新增'" :number="managerCount"> </SmallCard>
       </div>
 
@@ -42,13 +42,18 @@
       </div>
     </Card>
 
-    <ItemCard v-if="isFormShow" @close="isFormShow = false"></ItemCard>
+    <AddAccountCard
+      v-if="isFormShow"
+      @close="isFormShow = false"
+      @submit="addShoesManager"
+      :title="'manager'"
+    ></AddAccountCard>
   </div>
 </template>
 <script>
 import SmallCard from "@/components/SmallCard.vue";
-import ItemCard from "@/components/ItemCard.vue";
-import { mapActions } from "vuex";
+import AddAccountCard from "@/components/AddAccountCard.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "AddManager",
@@ -79,12 +84,24 @@ export default {
         "0x78aa96c6058bebd04e5a6e04045c27bb203e090e27a0d222dfcec95ac3f4438f"
     };
   },
+  computed: {
+    ...mapState(["contract"])
+  },
   components: {
     SmallCard,
-    ItemCard
+    AddAccountCard
   },
   methods: {
-    ...mapActions(["initIPFS", "initContract", "initContractLogs"]),
+    async addShoesManager(formItem) {
+      try {
+        // set type 0x2 because of EIP1599
+        await this.contract.methods
+          .addShoesManager(formItem.UID, formItem.address, formItem.country)
+          .send({ type: "0x2" });
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async parserLog() {
       let i;
       const maxLogs = localStorage.getItem("logsNum");
