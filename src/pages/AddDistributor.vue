@@ -42,13 +42,18 @@
       </div>
     </Card>
 
-    <ItemCard v-if="isFormShow" @close="isFormShow = false"></ItemCard>
+    <AddAccountCard
+      v-if="isFormShow"
+      @close="isFormShow = false"
+      :title="'distributor'"
+      @submit="addShoesDistributor"
+    ></AddAccountCard>
   </div>
 </template>
 <script>
 import SmallCard from "@/components/SmallCard.vue";
-import ItemCard from "@/components/ItemCard.vue";
-import { mapActions } from "vuex";
+import AddAccountCard from "@/components/AddAccountCard.vue";
+import { mapState } from "vuex";
 
 export default {
   name: "addDistributor",
@@ -57,6 +62,7 @@ export default {
       isFormShow: false,
       distributorCount: 0,
       distributorList: [],
+      // need to change here
       eventParserMethodSignature: [
         {
           type: "string",
@@ -76,15 +82,28 @@ export default {
         }
       ],
       decodeTopics:
-        "0x78aa96c6058bebd04e5a6e04045c27bb203e090e27a0d222dfcec95ac3f4438f"
+        "0xfc6e7d040a8092cf9d77373a8532258ad9b19d874605c3ee5d8b2a9330559b1e"
     };
+  },
+  computed: {
+    ...mapState(["contract"])
   },
   components: {
     SmallCard,
-    ItemCard
+    AddAccountCard
   },
   methods: {
-    ...mapActions(["initIPFS", "initContract", "initContractLogs"]),
+    async addShoesDistributor(formItem) {
+      try {
+        // set type 0x2 because of EIP1599
+        await this.contract.methods
+          .addShoesDistributor(formItem.UID, formItem.address, formItem.country)
+          .send({ type: "0x2" });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // 可以再精簡
     async parserLog() {
       let i;
       const maxLogs = localStorage.getItem("logsNum");
@@ -101,7 +120,7 @@ export default {
         // decode event and get product id
         const {
           UID,
-          manager,
+          distributor,
           country,
           bornDate
         } = await web3.eth.abi.decodeLog(
@@ -110,13 +129,13 @@ export default {
           logData.topics
         );
 
-        const newManager = {};
-        newManager.UID = UID;
-        newManager.ethAddress = manager;
-        newManager.country = country;
-        newManager.bornDate = bornDate;
+        const newDistributor = {};
+        newDistributor.UID = UID;
+        newDistributor.ethAddress = distributor;
+        newDistributor.country = country;
+        newDistributor.bornDate = bornDate;
 
-        this.distributorList.push(newManager);
+        this.distributorList.push(newDistributor);
         this.distributorCount++;
       }
     }
