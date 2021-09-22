@@ -7,12 +7,43 @@ if (typeof web3 !== "undefined") {
   alert("Can Not Find Metamsk!");
 }
 
-const contractAddress = "0xa5cc0F1eCc95ACae6451E7a2D26B2dd61ca90b0C";
+const contractAddress = "0xEB9a844749c69E34Dd30d2860f9208470261969f";
 const abi = [
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "UID",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "distributor",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "country",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "bornDate",
+				"type": "uint256"
+			}
+		],
+		"name": "addDistributorEvent",
+		"type": "event"
 	},
 	{
 		"anonymous": false,
@@ -312,9 +343,19 @@ const abi = [
 	{
 		"inputs": [
 			{
+				"internalType": "string",
+				"name": "_UID",
+				"type": "string"
+			},
+			{
 				"internalType": "address",
-				"name": "targetAddress",
+				"name": "_targetAddress",
 				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_country",
+				"type": "string"
 			}
 		],
 		"name": "addShoesDistributor",
@@ -470,6 +511,45 @@ const abi = [
 		"name": "delShoesManager",
 		"outputs": [],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "distributorList",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "UID",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "chainAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "country",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "bornDate",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "isBan",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
