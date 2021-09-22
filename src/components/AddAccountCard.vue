@@ -1,24 +1,28 @@
 <template>
   <div class="createFormContainer">
+    <div class="formTitle">Add new {{ title }}</div>
     <Form :model="formItem" :label-width="80">
       <div class="upload-container">
         <ImageUpload @setImageIpfsPath="setImageIpfsPath"></ImageUpload>
       </div>
       <div class="input-form">
         <FormItem label="UID">
-          <Input v-model="formItem.UID" placeholder="Enter manager UID"></Input>
+          <Input
+            v-model="formItem.UID"
+            :placeholder="`Enter ${title} UID`"
+          ></Input>
         </FormItem>
         <FormItem label="Address">
           <Input
             v-model="formItem.address"
-            placeholder="Enter manager address"
+            :placeholder="`Enter ${title} address`"
           ></Input>
         </FormItem>
         <FormItem label="Country">
           <Select
             v-model="formItem.country"
             filterable
-            placeholder="Select manager country"
+            :placeholder="`Select ${title} country`"
             not-found-text="Country not found"
           >
             <Option v-for="data in countryList" :key="data" :value="data">{{
@@ -28,7 +32,7 @@
         </FormItem>
         <FormItem>
           <div class="button-group">
-            <Button type="primary" @click="addManager">Submit</Button>
+            <Button type="primary" @click="submit">Submit</Button>
             <Button style="margin-left: 8px" @click="cancel">Cancel</Button>
           </div>
         </FormItem>
@@ -39,10 +43,9 @@
 <script>
 import contry from "../shoes/country.json";
 import ImageUpload from "./ImageUpload.vue";
-import { mapState } from "vuex";
 
 export default {
-  name: "ItemCard",
+  name: "AddAccountCard",
   data() {
     return {
       countryList: contry,
@@ -54,27 +57,15 @@ export default {
       imgPath: ""
     };
   },
-  computed: {
-    ...mapState(["contract"])
-  },
   components: {
     ImageUpload
   },
+  props: {
+    title: String
+  },
   methods: {
-    async addManager() {
-      try {
-        console.log(this.formItem);
-        // set type 0x2 because of EIP1599
-        await this.contract.methods
-          .addShoesManager(
-            this.formItem.UID,
-            this.formItem.address,
-            this.formItem.country
-          )
-          .send({ type: "0x2" });
-      } catch (error) {
-        console.log(error);
-      }
+    async submit() {
+      this.$emit("submit", this.formItem);
     },
     cancel() {
       this.$emit("close");
@@ -105,13 +96,17 @@ export default {
 
   box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.3);
 }
+.formTitle {
+  text-align: center;
+  font-size: 24px;
+}
 .input-form {
   margin-top: 20px;
 }
 .upload-container {
   width: 100%;
   height: 150px;
-  /* border-bottom: 1px solid #707070; */
+  margin-top: 15px;
   box-shadow: 2px 3px 5px 0px #e2e2e2;
 }
 .button-group {
