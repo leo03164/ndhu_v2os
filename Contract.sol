@@ -28,6 +28,7 @@ contract kernel {
         address[] ownerHistory; // 持有者歷史
     }
 
+    // at here manager is include distributor
     struct Manager {
         string UID; // 公司編號
         address chainAddress; // 區塊鏈位址
@@ -41,6 +42,12 @@ contract kernel {
     event addManagerEvent(
         string UID,
         address manager,
+        string country,
+        uint256 bornDate
+    );
+    event addDistributorEvent(
+        string UID,
+        address distributor,
         string country,
         uint256 bornDate
     );
@@ -84,6 +91,9 @@ contract kernel {
 
     // use unique id to mapping manager shoesManager === sub-company
     mapping(address => Manager) public managerList;
+
+    // use unique id to mapping manager shoesDistributor === store
+    mapping(address => Manager) public distributorList;
 
     // shoesDistributor === distributor
     mapping(address => bool) public shoesDistributors;
@@ -266,22 +276,40 @@ contract kernel {
         emit addShoesToBlackListEvent(targetId, msg.sender, reason);
     }
 
-    function addShoesDistributor(address targetAddress) public isShoesManager {
+    function addShoesDistributor(
+        string memory _UID,
+        address _targetAddress,
+        string memory _country
+    ) public isShoesManager {
         require(
-            shoesDistributors[targetAddress] == false,
+            distributorList[_targetAddress].bornDate == 0,
             "Target is already a Distributor"
         );
 
-        shoesDistributors[targetAddress] = true;
+        Manager memory shoesDistributor;
+        shoesDistributor.UID = _UID;
+        shoesDistributor.chainAddress = _targetAddress;
+        shoesDistributor.country = _country;
+        shoesDistributor.bornDate = block.timestamp;
+        shoesDistributor.isBan = false;
+
+        distributorList[_targetAddress] = shoesDistributor;
+        emit addDistributorEvent(
+            shoesDistributor.UID,
+            shoesDistributor.chainAddress,
+            shoesDistributor.country,
+            shoesDistributor.bornDate
+        );
     }
 
     function delShoesDistributor(address targetAddress) public isShoesManager {
         require(
-            shoesDistributors[targetAddress] == true,
+            (distributorList[targetAddress].isBan == false &&
+                distributorList[targetAddress].bornDate > 0),
             "Target is not a Distributor"
         );
 
-        shoesDistributors[targetAddress] = false;
+        distributorList[targetAddress].isBan = true;
     }
 
     modifier isDistributor(address target) {
