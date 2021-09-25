@@ -10,17 +10,17 @@ export default new Router({
     {
       path: '/admin/product/create',
       name: 'AddProduct',      
-      component: () => import(/* webpackChunkName: "about" */ './pages/AddProduct')
+      component: () => import(/* webpackChunkName: "about" */ './page-components/AddProduct')
     },
     {
       path: '/admin/distributor/create',
       name: 'AddDistributor',      
-      component: () => import(/* webpackChunkName: "about" */ './pages/AddDistributor')
+      component: () => import(/* webpackChunkName: "about" */ './page-components/AddDistributor')
     },
     {
       path: '/admin/manager/create',
       name: 'AddManager',      
-      component: () => import(/* webpackChunkName: "about" */ './pages/AddManager')
+      component: () => import(/* webpackChunkName: "about" */ './page-components/AddManager')
     }
   ]
 })

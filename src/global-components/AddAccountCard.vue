@@ -41,8 +41,8 @@
   </div>
 </template>
 <script>
-import contry from "../shoes/country.json";
-import ImageUpload from "./ImageUpload.vue";
+import contry from "@/assets/shoes/country.json";
+import ImageUpload from "@/global-components/ImageUpload.vue";
 
 export default {
   name: "AddAccountCard",
@@ -73,9 +73,6 @@ export default {
     setImageIpfsPath(path) {
       this.imgPath = path;
     }
-  },
-  destroyed() {
-    window.localStorage.clear();
   }
 };
 </script>

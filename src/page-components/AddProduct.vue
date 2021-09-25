@@ -65,8 +65,8 @@
   </div>
 </template>
 <script>
-import SmallCard from "@/components/SmallCard.vue";
-import CreateNewProductCard from "@/components/CreateNewProductCard.vue";
+import SmallCard from "@/ui-components/SmallCard.vue";
+import CreateNewProductCard from "@/global-components/CreateNewProductCard.vue";
 import { mapActions, mapState } from "vuex";
 
 export default {

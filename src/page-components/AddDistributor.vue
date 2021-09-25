@@ -9,8 +9,8 @@
       }"
     >
       <div class="card-group">
-        <SmallCard :title="'管理員上限'" :number="100"> </SmallCard>
-        <SmallCard :title="'今日新增'" :number="managerCount"> </SmallCard>
+        <SmallCard :title="'經銷商上限'" :number="100"> </SmallCard>
+        <SmallCard :title="'今日新增'" :number="distributorCount"> </SmallCard>
       </div>
 
       <div class="table-card">
@@ -23,16 +23,16 @@
         </Row>
         <Row
           class="table-content-container"
-          v-for="(manager, index) in managerList"
-          :key="'manager' + index"
+          v-for="(distributor, index) in distributorList"
+          :key="'distributor' + index"
         >
           <Col span="2">
             <img src="../assets/003.png" class="table-img" alt="" />
           </Col>
-          <Col span="4" class="table-content">{{ manager.UID }}</Col>
-          <Col span="7" class="table-content">{{ manager.ethAddress }}</Col>
-          <Col span="4" class="table-content">{{ manager.country }}</Col>
-          <Col span="4" class="table-content">{{ manager.bornDate }}</Col>
+          <Col span="4" class="table-content">{{ distributor.UID }}</Col>
+          <Col span="7" class="table-content">{{ distributor.ethAddress }}</Col>
+          <Col span="4" class="table-content">{{ distributor.country }}</Col>
+          <Col span="4" class="table-content">{{ distributor.bornDate }}</Col>
         </Row>
         <Row class="table-content-container">
           <Col span="2">
@@ -45,23 +45,24 @@
     <AddAccountCard
       v-if="isFormShow"
       @close="isFormShow = false"
-      @submit="addShoesManager"
-      :title="'manager'"
+      :title="'distributor'"
+      @submit="addShoesDistributor"
     ></AddAccountCard>
   </div>
 </template>
 <script>
-import SmallCard from "@/components/SmallCard.vue";
-import AddAccountCard from "@/components/AddAccountCard.vue";
+import SmallCard from "@/ui-components/SmallCard.vue";
+import AddAccountCard from "@/global-components/AddAccountCard.vue";
 import { mapState } from "vuex";
 
 export default {
-  name: "AddManager",
+  name: "addDistributor",
   data() {
     return {
       isFormShow: false,
-      managerCount: 0,
-      managerList: [],
+      distributorCount: 0,
+      distributorList: [],
+      // need to change here
       eventParserMethodSignature: [
         {
           type: "string",
@@ -69,7 +70,7 @@ export default {
         },
         {
           type: "address",
-          name: "manager"
+          name: "distributor"
         },
         {
           type: "string",
@@ -81,7 +82,7 @@ export default {
         }
       ],
       decodeTopics:
-        "0x78aa96c6058bebd04e5a6e04045c27bb203e090e27a0d222dfcec95ac3f4438f"
+        "0xfc6e7d040a8092cf9d77373a8532258ad9b19d874605c3ee5d8b2a9330559b1e"
     };
   },
   computed: {
@@ -92,16 +93,17 @@ export default {
     AddAccountCard
   },
   methods: {
-    async addShoesManager(formItem) {
+    async addShoesDistributor(formItem) {
       try {
         // set type 0x2 because of EIP1599
         await this.contract.methods
-          .addShoesManager(formItem.UID, formItem.address, formItem.country)
+          .addShoesDistributor(formItem.UID, formItem.address, formItem.country)
           .send({ type: "0x2" });
       } catch (error) {
         console.log(error);
       }
     },
+    // 可以再精簡
     async parserLog() {
       let i;
       const maxLogs = localStorage.getItem("logsNum");
@@ -118,7 +120,7 @@ export default {
         // decode event and get product id
         const {
           UID,
-          manager,
+          distributor,
           country,
           bornDate
         } = await web3.eth.abi.decodeLog(
@@ -127,14 +129,14 @@ export default {
           logData.topics
         );
 
-        const newManager = {};
-        newManager.UID = UID;
-        newManager.ethAddress = manager;
-        newManager.country = country;
-        newManager.bornDate = bornDate;
+        const newDistributor = {};
+        newDistributor.UID = UID;
+        newDistributor.ethAddress = distributor;
+        newDistributor.country = country;
+        newDistributor.bornDate = bornDate;
 
-        this.managerList.push(newManager);
-        this.managerCount++;
+        this.distributorList.push(newDistributor);
+        this.distributorCount++;
       }
     }
   },

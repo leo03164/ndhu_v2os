@@ -49,9 +49,9 @@
   </div>
 </template>
 <script>
-import company from "../shoes/company.json";
-import contry from "../shoes/country.json";
-import ImageUpload from "./ImageUpload.vue";
+import company from "@/assets/shoes/company.json";
+import contry from "@/assets/shoes/country.json";
+import ImageUpload from "@/global-components/ImageUpload.vue";
 import { mapState } from "vuex";
 
 export default {
@@ -98,9 +98,6 @@ export default {
     setImageIpfsPath(path) {
       this.imgPath = path;
     }
-  },
-  destroyed() {
-    window.localStorage.clear();
   }
 };
 </script>
