@@ -24,7 +24,7 @@
           <Col span="7" class="table-hearder">Name</Col>
           <Col span="3" class="table-hearder">State</Col>
           <Col span="4" class="table-hearder">Made</Col>
-          <Col span="4" class="table-hearder">Date</Col>
+          <Col span="4" class="table-hearder">Action</Col>
         </Row>
         <!-- set productList is computed -->
         <Row
@@ -41,9 +41,13 @@
           </Col>
           <Col span="4" class="table-content">{{ product.SN }}</Col>
           <Col span="7" class="table-content">{{ product.name }}</Col>
-          <Col span="3" class="table-content">{{ product.state }}</Col>
+          <Col span="3" class="table-content">{{
+            stateDescription[product.state]
+          }}</Col>
           <Col span="4" class="table-content">{{ product.bornFrom }}</Col>
-          <Col span="4" class="table-content">{{ product.bornDate }}</Col>
+          <Col span="4" class="table-content mg-t-n5">
+            <Button>轉移</Button>
+          </Col>
         </Row>
         <CreateNewProductCard
           v-if="isFormShow"
@@ -97,7 +101,16 @@ export default {
         "0x6086c739621021f2c86f8ecdbb2ac8d30a0d87ba5574d12b5c5cadee0cd085de",
       eventLogDataArray: [],
       productList: [],
-      maxLogs: 0
+      maxLogs: 0,
+      stateDescription: [
+        "Comming soon",
+        "Selling",
+        "Proxy",
+        "Transferable",
+        "Transfering",
+        "Ban",
+        "Delete"
+      ]
     };
   },
   computed: {
@@ -139,10 +152,9 @@ export default {
           SN,
           name,
           state,
-          bornFrom,
-          bornDate
+          bornFrom
         } = await this.contract.methods.shoesList(id).call();
-        this.productList.push({ CID, SN, name, state, bornFrom, bornDate });
+        this.productList.push({ CID, SN, name, state, bornFrom });
       }
     }
   },
@@ -195,5 +207,8 @@ export default {
 .add-icon:hover {
   transition: all 0.2s ease-in-out;
   opacity: 1;
+}
+.mg-t-n5 {
+  margin-top: -5px;
 }
 </style>
