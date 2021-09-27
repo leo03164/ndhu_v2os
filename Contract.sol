@@ -57,6 +57,7 @@ contract kernel {
         address to,
         string location
     );
+    event empowerShoesEvent(bytes32 shoesId, address distributor);
     event addShoesToBlackListEvent(bytes32 id, address manager, string reason);
     event modifyShoesSNEvent(bytes32 id, string newSN, address who);
     event modifyShoesNameEvent(bytes32 id, string newName, address who);
@@ -313,7 +314,11 @@ contract kernel {
     }
 
     modifier isDistributor(address target) {
-        require(shoesDistributors[target], "You are not Distributor");
+        require(
+            (distributorList[target].bornDate > 0 &&
+                distributorList[target].isBan == false),
+            "Target is not shoes distributor"
+        );
         _;
     }
 
@@ -326,6 +331,7 @@ contract kernel {
     {
         shoesList[shoesId].owner = distributor;
         shoesList[shoesId].state = State.SELLING;
+        emit empowerShoesEvent(shoesId, distributor);
     }
 
     // ------------ distributor code start ------------

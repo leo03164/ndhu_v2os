@@ -7,7 +7,7 @@ if (typeof web3 !== "undefined") {
   alert("Can Not Find Metamsk!");
 }
 
-const contractAddress = "0xEB9a844749c69E34Dd30d2860f9208470261969f";
+const contractAddress = "0x136910c52F7756Bcb0e5f4195B29F60dFE9a700C";
 const abi = [
 	{
 		"inputs": [],
@@ -143,6 +143,25 @@ const abi = [
 			}
 		],
 		"name": "delShoesEvent",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "distributor",
+				"type": "address"
+			}
+		],
+		"name": "empowerShoesEvent",
 		"type": "event"
 	},
 	{

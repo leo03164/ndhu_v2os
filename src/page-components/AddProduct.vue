@@ -46,14 +46,18 @@
           }}</Col>
           <Col span="4" class="table-content">{{ product.bornFrom }}</Col>
           <Col span="4" class="table-content mg-t-n5">
-            <Button>轉移</Button>
+            <Button @click="transferHandler(product)">轉移</Button>
           </Col>
         </Row>
         <CreateNewProductCard
           v-if="isFormShow"
           @close="isFormShow = false"
         ></CreateNewProductCard>
-
+        <Empowerment
+          v-if="isTransferModalShow"
+          :product="currentProduct"
+          @close="isTransferModalShow = false"
+        ></Empowerment>
         <Icon
           type="md-add-circle"
           class="add-icon"
@@ -67,9 +71,11 @@
 <script>
 import SmallCard from "@/ui-components/SmallCard.vue";
 import CreateNewProductCard from "@/global-components/CreateNewProductCard.vue";
-import { mapActions, mapState } from "vuex";
+import Empowerment from "@/global-components/Empowerment.vue";
+import { mapState } from "vuex";
 
 export default {
+  components: { SmallCard, CreateNewProductCard, Empowerment },
   data() {
     return {
       cardData: [
@@ -110,7 +116,9 @@ export default {
         "Transfering",
         "Ban",
         "Delete"
-      ]
+      ],
+      isTransferModalShow: false,
+      currentProduct: {}
     };
   },
   computed: {
@@ -120,7 +128,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["initIPFS", "initContract", "initContractLogs"]),
     async toggoleFormShow() {
       this.isFormShow = !this.isFormShow;
     },
@@ -154,11 +161,15 @@ export default {
           state,
           bornFrom
         } = await this.contract.methods.shoesList(id).call();
-        this.productList.push({ CID, SN, name, state, bornFrom });
+        this.productList.push({ id, CID, SN, name, state, bornFrom });
       }
+    },
+    transferHandler(product) {
+      // todo show and transfer data
+      this.isTransferModalShow = true;
+      this.currentProduct = product;
     }
   },
-  components: { SmallCard, CreateNewProductCard },
   async created() {
     await this.parserLog();
   }
