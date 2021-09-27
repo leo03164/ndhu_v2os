@@ -28,24 +28,22 @@ export default {
   methods: {
     async fileSelected(e) {
       const file = e.target.files.item(0);
+
       const reader = new FileReader();
 
       reader.addEventListener("load", this.imageLoaded, false);
 
       if (file) {
-        reader.readAsDataURL(file);
+        reader.readAsArrayBuffer(file);
       }
     },
     async imageLoaded(reader) {
-      // convert image file to base64 string
-      this.isUploadShow = false;
-      this.image = reader.explicitOriginalTarget.result;
-      const result = await this.ipfs.add(reader.explicitOriginalTarget.result);
-      await this.ipfs.pin.add(result.path);
-      this.$emit("setImageIpfsPath", result.path);
-
-      // @todo can't return too large file need to fix
-      // this.image = `https://ipfs.io/ipfs/${result.path}`;
+      const arrayBuffer = reader.target.result;
+      const fileBuffer = new Uint8Array(arrayBuffer);
+      const { path } = await this.ipfs.add(fileBuffer);
+      this.ipfs.pin.add(path);
+      this.image = `https://ipfs.io/ipfs/${path}`;
+      this.$emit("setImageIpfsPath", path);
     }
   }
 };
