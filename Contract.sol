@@ -58,6 +58,11 @@ contract kernel {
         string location
     );
     event empowerShoesEvent(bytes32 shoesId, address distributor);
+    event shoesRandomValueEvent(
+        address distributor,
+        bytes32 shoesId,
+        bytes32 randomValue
+    );
     event addShoesToBlackListEvent(bytes32 id, address manager, string reason);
     event modifyShoesSNEvent(bytes32 id, string newSN, address who);
     event modifyShoesNameEvent(bytes32 id, string newName, address who);
@@ -357,6 +362,7 @@ contract kernel {
         isShoesCanSell(shoesId)
     {
         randomValueOfShoes[shoesId] = randomValueHash;
+        emit shoesRandomValueEvent(msg.sender, shoesId, randomValueHash);
     }
 
     // ------------ distributor code end ------------
