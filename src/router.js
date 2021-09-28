@@ -21,6 +21,11 @@ export default new Router({
       path: '/admin/manager/create',
       name: 'AddManager',      
       component: () => import(/* webpackChunkName: "about" */ './page-components/AddManager')
+    },
+    {
+      path: '/admin/product/sell',
+      name: 'sell',      
+      component: () => import(/* webpackChunkName: "about" */ './page-components/Sell')
     }
   ]
 })

@@ -23,6 +23,10 @@
                 <Icon type="ios-settings"></Icon>
                 <router-link to="/admin/product/ban">黑名單</router-link>
               </MenuItem>
+              <MenuItem name="1-5">
+                <Icon type="ios-settings"></Icon>
+                <router-link to="/admin/product/sell">商品販售</router-link>
+              </MenuItem>
             </Menu>
             <div slot="trigger"></div>
           </Sider>
