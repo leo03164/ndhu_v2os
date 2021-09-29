@@ -44,6 +44,7 @@ export default {
       this.ipfs.pin.add(path);
       this.image = `https://ipfs.io/ipfs/${path}`;
       this.$emit("setImageIpfsPath", path);
+      this.isUploadShow = false;
     }
   }
 };
