@@ -70,6 +70,7 @@ export default {
         await this.contract.methods
           .empowerShoesToDistributor(this.product.id, this.selectedDistributor)
           .send({ type: "0x2" });
+        this.$emit("close");
       } catch (error) {
         console.log(error);
       }

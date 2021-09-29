@@ -66,6 +66,7 @@ export default {
   methods: {
     async submit() {
       this.$emit("submit", this.formItem);
+      this.$emit("close");
     },
     cancel() {
       this.$emit("close");

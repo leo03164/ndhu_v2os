@@ -88,6 +88,7 @@ export default {
           )
           .send({ type: "0x2" });
         console.log("ShoesId: ", shoesId);
+        this.$emit("close");
       } catch (error) {
         console.log(error);
       }

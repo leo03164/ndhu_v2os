@@ -42,6 +42,7 @@ export default {
         await this.contract.methods
           .setShoesRandomValue(this.shoesId, rvHash)
           .send({ type: "0x2" });
+        this.$emit("close");
       } catch (error) {
         console.log(error);
       }
