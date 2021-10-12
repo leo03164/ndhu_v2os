@@ -62,6 +62,7 @@
 import SmallCard from "@/ui-components/SmallCard.vue";
 import CreateNewProductCard from "@/global-components/CreateNewProductCard.vue";
 import RandomValue from "@/global-components/RandomValue.vue";
+import { stateDescription } from "@/constant.json";
 import { mapState } from "vuex";
 
 export default {
@@ -84,15 +85,7 @@ export default {
       ],
 
       productList: [],
-      stateDescription: [
-        "Comming soon",
-        "Selling",
-        "Proxy",
-        "Transferable",
-        "Transfering",
-        "Ban",
-        "Delete"
-      ],
+      stateDescription,
       currentProduct: {},
       isShowSellModal: false,
       productCount: 0

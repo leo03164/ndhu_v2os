@@ -79,6 +79,7 @@
 import SmallCard from "@/ui-components/SmallCard.vue";
 import ActionSheet from "@/ui-components/ActionSheet.vue";
 import { mapState } from "vuex";
+import { stateDescription } from "@/constant.json";
 
 export default {
   components: { SmallCard, ActionSheet },
@@ -100,15 +101,6 @@ export default {
       ],
       isFormShow: false,
       productList: [],
-      stateDescription: [
-        "Comming soon",
-        "Selling",
-        "Proxy",
-        "Transferable",
-        "Transfering",
-        "Ban",
-        "Delete"
-      ],
       currentProduct: {},
       registerKey: "",
       shoesId: "",

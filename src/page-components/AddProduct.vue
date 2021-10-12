@@ -72,6 +72,7 @@
 import SmallCard from "@/ui-components/SmallCard.vue";
 import CreateNewProductCard from "@/global-components/CreateNewProductCard.vue";
 import Empowerment from "@/global-components/Empowerment.vue";
+import { stateDescription } from "@/constant.json";
 import { mapState } from "vuex";
 
 export default {
@@ -95,15 +96,7 @@ export default {
       isFormShow: false,
       productList: [],
       productCount: 0,
-      stateDescription: [
-        "Comming soon",
-        "Selling",
-        "Proxy",
-        "Transferable",
-        "Transfering",
-        "Ban",
-        "Delete"
-      ],
+      stateDescription,
       isTransferModalShow: false,
       currentProduct: {}
     };
