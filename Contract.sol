@@ -63,6 +63,7 @@ contract kernel {
         bytes32 shoesId,
         bytes32 randomValue
     );
+    event shoesRegisterEvent(bytes32 shoesId, address buyer, string location);
     event addShoesToBlackListEvent(bytes32 id, address manager, string reason);
     event modifyShoesSNEvent(bytes32 id, string newSN, address who);
     event modifyShoesNameEvent(bytes32 id, string newName, address who);
@@ -83,6 +84,7 @@ contract kernel {
     // I think one product mapping one agent
     address public agent;
 
+    // total created shoes
     uint64 public shoesCount;
 
     // agent will change in future
@@ -91,6 +93,14 @@ contract kernel {
         agent = contractOwner;
         shoesCount = 0;
     }
+
+    // record shoes data before empower
+    uint64 public shoesBeforeEmpowerCount = 0;
+    bytes32[] public shoesInfoBeforeEmpower;
+
+    // record shoes data before customer register
+    uint64 public shoesBeforeRegisterCount = 0;
+    bytes32[] public shoesInfoBeforeRegister;
 
     // use unique id to mapping product
     mapping(bytes32 => Shoes) public shoesList;
@@ -103,6 +113,12 @@ contract kernel {
 
     // shoesDistributor === distributor
     mapping(address => bool) public shoesDistributors;
+
+    // customer shoes ids
+    mapping(address => bytes32[]) public customerShoesIds;
+
+    mapping(address => uint64) public customerShoesCount;
+
 
     modifier isContractOwner() {
         require(msg.sender == contractOwner, "You are not Contract Owner");
@@ -191,6 +207,9 @@ contract kernel {
         shoesList[shoesId] = newShoes;
         shoesCount++;
         emit addShoesEvent(shoesId, msg.sender);
+
+        shoesInfoBeforeEmpower.push(shoesId);
+        shoesBeforeEmpowerCount++;
         return shoesId;
     }
 
@@ -337,6 +356,24 @@ contract kernel {
         shoesList[shoesId].owner = distributor;
         shoesList[shoesId].state = State.SELLING;
         emit empowerShoesEvent(shoesId, distributor);
+
+        uint64 empowerIndex = indexOf(shoesInfoBeforeEmpower, shoesId);
+        delete shoesInfoBeforeEmpower[empowerIndex];
+
+        shoesInfoBeforeRegister.push(shoesId);
+        shoesBeforeRegisterCount++;
+    }
+
+    function indexOf(bytes32[] memory arr, bytes32 shoesId)
+        public
+        pure
+        returns (uint64)
+    {
+        uint64 i = 0;
+        while (arr[i] != shoesId && i < arr.length) {
+            i++;
+        }
+        return i;
     }
 
     // ------------ distributor code start ------------
@@ -375,7 +412,7 @@ contract kernel {
         bytes32 shoesId,
         string memory randomValue,
         string memory location
-    ) public isShoesCanSell(shoesId) returns (bool) {
+    ) public isShoesCanSell(shoesId) {
         if (
             randomValueOfShoes[shoesId] ==
             keccak256(abi.encodePacked(randomValue))
@@ -384,9 +421,14 @@ contract kernel {
             shoesList[shoesId].state = State.TRANSFERABLE;
             shoesList[shoesId].ownerHistory.push(msg.sender);
             shoesList[shoesId].lastBuyerLocation = location;
-            return true;
+            emit shoesRegisterEvent(shoesId, msg.sender, location);
+
+            uint64 index = indexOf(shoesInfoBeforeRegister, shoesId);
+            delete shoesInfoBeforeRegister[index];
+
+            customerShoesIds[msg.sender].push(shoesId);
+            customerShoesCount[msg.sender]++;
         }
-        return false;
     }
 
     function getByte32Hash(string memory temp) public pure returns (bytes32) {
