@@ -49,9 +49,10 @@
             <Button @click="transferHandler(product)">轉移</Button>
           </Col>
         </Row>
+        <!-- register -->
         <ActionSheet
-          v-if="isFormShow"
-          @close="isFormShow = false"
+          v-if="isRegisterFormShow"
+          @close="isRegisterFormShow = false"
           @submit="registerProduct"
           :title="'Prodcut Register'"
         >
@@ -65,24 +66,34 @@
             ></Input>
           </FormItem>
         </ActionSheet>
+
+        <!-- transfer -->
+        <Transfer
+          v-if="isTransferFormShow"
+          :product="currentProduct"
+          @close="isTransferFormShow = false"
+        >
+        </Transfer>
+
         <Icon
           type="md-add-circle"
           class="add-icon"
           size="64"
-          @click="toggoleFormShow"
+          @click="toggoleRegisterFormShow"
         />
       </div>
     </Card>
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import SmallCard from "@/ui-components/SmallCard.vue";
 import ActionSheet from "@/ui-components/ActionSheet.vue";
-import { mapState } from "vuex";
+import Transfer from "@/global-components/Transfer.vue";
 import { stateDescription } from "@/constant.json";
 
 export default {
-  components: { SmallCard, ActionSheet },
+  components: { SmallCard, ActionSheet, Transfer },
   data() {
     return {
       cardData: [
@@ -99,13 +110,15 @@ export default {
           number: 20
         }
       ],
-      isFormShow: false,
+      isRegisterFormShow: false,
+      isTransferFormShow: false,
       productList: [],
       currentProduct: {},
       registerKey: "",
       shoesId: "",
       shoesCount: 0,
-      shoesIds: []
+      shoesIds: [],
+      stateDescription
     };
   },
   computed: {
@@ -115,8 +128,8 @@ export default {
     }
   },
   methods: {
-    async toggoleFormShow() {
-      this.isFormShow = !this.isFormShow;
+    async toggoleRegisterFormShow() {
+      this.isRegisterFormShow = !this.isRegisterFormShow;
     },
     async registerProduct() {
       try {
@@ -124,35 +137,43 @@ export default {
           await this.contract.methods
             .registerShoes(this.shoesId, this.registerKey, "Taiwan")
             .send({ type: "0x2" });
-          this.isFormShow = false;
+          this.isRegisterFormShow = false;
         }
       } catch (error) {
         console.log(error);
       }
+    },
+    async transferHandler(product) {
+      this.currentProduct = product;
+      this.isTransferFormShow = true;
+    },
+    async initProductList() {
+      this.shoesCount = await this.contract.methods
+        .customerShoesCount(this.currentAccount)
+        .call();
+
+      let i;
+      for (i = 0; i < this.shoesCount; i++) {
+        const customerShoesId = await this.contract.methods
+          .customerShoesIds(this.currentAccount, i)
+          .call();
+        if (customerShoesId == 0x0) {
+          continue;
+        }
+        this.shoesIds.push(customerShoesId);
+      }
+
+      let shoesListPromiseArr = [];
+      for (i = 0; i < this.shoesIds.length; i++) {
+        shoesListPromiseArr.push(
+          this.contract.methods.shoesList(this.shoesIds[i]).call()
+        );
+      }
+      this.productList = await Promise.all(shoesListPromiseArr);
     }
   },
-  async transferHandler() {},
   async created() {
-    this.shoesCount = await this.contract.methods
-      .customerShoesCount(this.currentAccount)
-      .call();
-
-    let i;
-    let shoesIdsPromiseArr = [];
-    for (i = 0; i < this.shoesCount; i++) {
-      shoesIdsPromiseArr.push(
-        this.contract.methods.customerShoesIds(this.currentAccount, i).call()
-      );
-    }
-    this.shoesIds = await Promise.all(shoesIdsPromiseArr);
-
-    let shoesListPromiseArr = [];
-    for (i = 0; i < this.shoesCount; i++) {
-      shoesListPromiseArr.push(
-        this.contract.methods.shoesList(this.shoesIds[i]).call()
-      );
-    }
-    this.productList = await Promise.all(shoesListPromiseArr);
+    await this.initProductList();
   }
 };
 </script>
