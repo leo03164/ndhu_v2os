@@ -8,7 +8,8 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {
         ipfs: {},
-        contract: {}
+        contract: {},
+        currentAccount: ''
     },
     mutations: {
         setIPFS(state, payload) {
@@ -19,6 +20,7 @@ const store = new Vuex.Store({
         },
         setContractCurrentAccount(state, payload) {
             state.contract.options.from = payload;
+            state.currentAccount = payload;
         }
     },
     actions: {

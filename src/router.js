@@ -26,6 +26,11 @@ export default new Router({
       path: '/admin/product/sell',
       name: 'sell',      
       component: () => import(/* webpackChunkName: "about" */ './page-components/Sell')
+    },
+    {
+      path: '/customer/product',
+      name: 'ProductManagement',      
+      component: () => import(/* webpackChunkName: "about" */ './page-components/ProductManagement')
     }
   ]
 })

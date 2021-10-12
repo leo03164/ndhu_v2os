@@ -27,6 +27,10 @@
                 <Icon type="ios-settings"></Icon>
                 <router-link to="/admin/product/sell">商品販售</router-link>
               </MenuItem>
+              <MenuItem name="1-6">
+                <Icon type="ios-settings"></Icon>
+                <router-link to="/customer/product">商品管理</router-link>
+              </MenuItem>
             </Menu>
             <div slot="trigger"></div>
           </Sider>
