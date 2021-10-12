@@ -93,21 +93,8 @@ export default {
         }
       ],
       isFormShow: false,
-      decodeInputArr: [
-        {
-          type: "bytes32",
-          name: "id"
-        },
-        {
-          type: "address",
-          name: "who"
-        }
-      ],
-      decodeTopics:
-        "0x6086c739621021f2c86f8ecdbb2ac8d30a0d87ba5574d12b5c5cadee0cd085de",
-      eventLogDataArray: [],
       productList: [],
-      maxLogs: 0,
+      productCount: 0,
       stateDescription: [
         "Comming soon",
         "Selling",
@@ -131,47 +118,33 @@ export default {
     async toggoleFormShow() {
       this.isFormShow = !this.isFormShow;
     },
-
-    // parser log from blockchain event
-    async parserLog() {
+    transferHandler(product) {
+      // show and transfer data
+      this.isTransferModalShow = true;
+      this.currentProduct = product;
+    },
+    async loadManagerList() {
       let i;
-      const maxLogs = localStorage.getItem("logsNum");
+      for (i = 0; i < this.productCount; i += 1) {
+        const shoesId = await this.contract.methods
+          .shoesInfoBeforeEmpower(i)
+          .call();
 
-      // decode data from localstorage
-      for (i = 0; i < maxLogs; i += 1) {
-        const logData = JSON.parse(localStorage.getItem(i));
-
-        // check the event that is we want
-        if (!this.decodeTopics.includes(logData.topics)) {
+        if (shoesId == 0x0) {
           continue;
         }
 
-        // decode event and get product id
-        const { id } = await web3.eth.abi.decodeLog(
-          this.decodeInputArr,
-          logData.data,
-          logData.topics
-        );
-
-        // get data detail by contract methods
-        const {
-          CID,
-          SN,
-          name,
-          state,
-          bornFrom
-        } = await this.contract.methods.shoesList(id).call();
-        this.productList.push({ id, CID, SN, name, state, bornFrom });
+        const shoes = await this.contract.methods.shoesList(shoesId).call();
+        shoes.id = shoesId;
+        this.productList.push(shoes);
       }
-    },
-    transferHandler(product) {
-      // todo show and transfer data
-      this.isTransferModalShow = true;
-      this.currentProduct = product;
     }
   },
   async created() {
-    await this.parserLog();
+    this.productCount = await this.contract.methods
+      .shoesBeforeEmpowerCount()
+      .call();
+    await this.loadManagerList();
   }
 };
 </script>

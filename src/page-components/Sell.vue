@@ -82,18 +82,7 @@ export default {
           number: 20
         }
       ],
-      decodeInputArr: [
-        {
-          type: "bytes32",
-          name: "shoesId"
-        },
-        {
-          type: "address",
-          name: "distributor"
-        }
-      ],
-      decodeTopics:
-        "0x4e60da0f29ac3cf2d3b427211ea454f95c3be568ec8ed3b88587b702480bbe0a",
+
       productList: [],
       stateDescription: [
         "Comming soon",
@@ -105,7 +94,8 @@ export default {
         "Delete"
       ],
       currentProduct: {},
-      isShowSellModal: false
+      isShowSellModal: false,
+      productCount: 0
     };
   },
   computed: {
@@ -116,44 +106,33 @@ export default {
   },
   methods: {
     // parser log from blockchain event
-    async parserLog() {
-      let i;
-      const maxLogs = localStorage.getItem("logsNum");
-
-      // decode data from localstorage
-      for (i = 0; i < maxLogs; i += 1) {
-        const logData = JSON.parse(localStorage.getItem(i));
-
-        // check the event that is we want
-        if (!this.decodeTopics.includes(logData.topics)) {
-          continue;
-        }
-
-        // decode event and get product id
-        const { shoesId } = await web3.eth.abi.decodeLog(
-          this.decodeInputArr,
-          logData.data,
-          logData.topics
-        );
-
-        // get data detail by contract methods
-        const {
-          CID,
-          SN,
-          name,
-          state,
-          bornFrom
-        } = await this.contract.methods.shoesList(shoesId).call();
-        this.productList.push({ shoesId, CID, SN, name, state, bornFrom });
-      }
-    },
     sellHandler(product) {
       this.currentProduct = product;
       this.isShowSellModal = true;
+    },
+    async loadShoesList() {
+      let i;
+      for (i = 0; i < this.productCount; i += 1) {
+        const shoesId = await this.contract.methods
+          .shoesInfoBeforeRegister(i)
+          .call();
+
+        if (shoesId == 0x0) {
+          continue;
+        }
+
+        const shoes = await this.contract.methods.shoesList(shoesId).call();
+        shoes.shoesId = shoesId;
+        console.log("shoes: ", shoes);
+        this.productList.push(shoes);
+      }
     }
   },
   async created() {
-    await this.parserLog();
+    this.productCount = await this.contract.methods
+      .shoesBeforeRegisterCount()
+      .call();
+    await this.loadShoesList();
   }
 };
 </script>
