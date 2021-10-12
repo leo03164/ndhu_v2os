@@ -119,7 +119,6 @@ contract kernel {
 
     mapping(address => uint64) public customerShoesCount;
 
-
     modifier isContractOwner() {
         require(msg.sender == contractOwner, "You are not Contract Owner");
         _;
@@ -509,6 +508,12 @@ contract kernel {
         shoesList[shoesId].ownerHistory.push(buyer);
 
         emit transferShoesEvent(shoesId, msg.sender, buyer, location);
+
+        uint64 index = indexOf(customerShoesIds[msg.sender], shoesId);
+        delete customerShoesIds[msg.sender][index];
+
+        customerShoesIds[buyer].push(shoesId);
+        customerShoesCount[buyer]++;
     }
 
     // case2: shopping on online
