@@ -119,6 +119,8 @@ contract kernel {
 
     mapping(address => uint64) public customerShoesCount;
 
+    mapping(bytes32 => bool) public isShoesPaid;
+
     modifier isContractOwner() {
         require(msg.sender == contractOwner, "You are not Contract Owner");
         _;
@@ -492,6 +494,11 @@ contract kernel {
         _;
     }
 
+    modifier isPriceNotYetSet(bytes32 shoesId) {
+        require(shoesPrice[shoesId] == 0, "The price already set !");
+        _;
+    }
+
     // case1: face to face trade
     function transferShoesByOwner(
         bytes32 shoesId,
@@ -517,20 +524,6 @@ contract kernel {
     }
 
     // case2: shopping on online
-    // setting the price that user want to sell
-    function setShoesPrice(bytes32 shoesId, uint64 price)
-        internal
-        returns (bool)
-    {
-        // if price alredy set return false
-        if (shoesPrice[shoesId] != 0) {
-            return false;
-        } else {
-            shoesPrice[shoesId] = price;
-            return true;
-        }
-    }
-
     // seller transfer asset to contract
     function transferShoesToContract(
         bytes32 shoesId,
@@ -553,6 +546,19 @@ contract kernel {
         return false;
     }
 
+    // setting the price that user want to sell
+    function setShoesPrice(bytes32 shoesId, uint64 price)
+        internal
+        isPriceNotYetSet(shoesId)
+        returns (bool)
+    {
+        if (price > 0) {
+            shoesPrice[shoesId] = price;
+            return true;
+        }
+        return false;
+    }
+
     // ------------ buyer code start ------------
 
     // need to set a time limit for buyer if other people want to buy
@@ -565,34 +571,39 @@ contract kernel {
         shoesList[shoesId].buyer = msg.sender;
     }
 
-    // buyer transfer money to contract
-    function payForShoes(bytes32 shoesId) public payable isBuyer(shoesId) {
-        // check the price that is more than 0
-        require(
-            shoesPrice[shoesId] != 0,
-            "The shoes price can't be 0, please check the price"
-        );
-
-        require(shoesPrice[shoesId] == msg.value, "Price not match!");
-        // @todo 付款應該改成這樣，就可以省去判斷
-        // msg.sender.transfer(shoesPrice[shoesId]);
-    }
-
     // before pay the money
     function cancelOrderByBuyer(bytes32 shoesId) public isBuyer(shoesId) {
         shoesList[shoesId].buyer = address(0);
     }
 
+    // buyer transfer money to contract
+    function payForShoes(bytes32 shoesId) public payable isBuyer(shoesId) {
+        require(shoesPrice[shoesId] == msg.value, "Price not match!");
+        isShoesPaid[shoesId] = true;
+    }
+
     // buyer already check the product and confirm money to seller
     function confirmOrder(bytes32 shoesId) public payable isBuyer(shoesId) {
-        // @todo
-        // 合約發錢到賣家帳戶，可能需要加個判斷
-        payable(shoesList[shoesId].owner).transfer(shoesPrice[shoesId]);
+        require(isShoesPaid[shoesId], "The shoes didn't pay");
+
+        address seller = shoesList[shoesId].owner;
+        address buyer = shoesList[shoesId].buyer;
+
+        // remove seller shoes record
+        uint64 index = indexOf(customerShoesIds[seller], shoesId);
+        delete customerShoesIds[seller][index];
+
+        // add buyer shoes record
+        customerShoesIds[buyer].push(shoesId);
+        customerShoesCount[buyer]++;
+
+        // contract transfer money to seller
+        payable(seller).transfer(shoesPrice[shoesId]);
 
         emit transferShoesEvent(
             shoesId,
-            shoesList[shoesId].owner,
-            shoesList[shoesId].buyer,
+            seller,
+            buyer,
             shoesList[shoesId].lastBuyerLocation
         );
 
@@ -603,6 +614,7 @@ contract kernel {
         shoesList[shoesId].ownerHistory.push(shoesList[shoesId].owner);
         shoesList[shoesId].state = State.TRANSFERABLE;
         shoesPrice[shoesId] = 0;
+        isShoesPaid[shoesId] = false;
     }
 
     bytes32[] reportList;
