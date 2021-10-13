@@ -7,7 +7,7 @@ if (typeof web3 !== "undefined") {
   alert("Can Not Find Metamsk!");
 }
 
-const contractAddress = "0xc07837ae7E718C0e04Ec8371e001E7337e97b7A8";
+const contractAddress = "0xCD42b0a748B0DE3629432b8A0D76f14Fb075485e";
 const abi = [
 	{
 		"inputs": [],
@@ -628,6 +628,38 @@ const abi = [
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "distributorArray",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "distributorCount",
+		"outputs": [
+			{
+				"internalType": "uint16",
+				"name": "",
+				"type": "uint16"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
 				"name": "",
 				"type": "address"
@@ -819,6 +851,38 @@ const abi = [
 				"internalType": "bool",
 				"name": "",
 				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "managerArray",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "managerCount",
+		"outputs": [
+			{
+				"internalType": "uint16",
+				"name": "",
+				"type": "uint16"
 			}
 		],
 		"stateMutability": "view",

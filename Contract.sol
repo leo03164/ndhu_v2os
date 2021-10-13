@@ -121,6 +121,12 @@ contract kernel {
 
     mapping(bytes32 => bool) public isShoesPaid;
 
+    address[] public managerArray;
+    address[] public distributorArray;
+
+    uint16 public managerCount = 0;
+    uint16 public distributorCount = 0;
+
     modifier isContractOwner() {
         require(msg.sender == contractOwner, "You are not Contract Owner");
         _;
@@ -150,6 +156,8 @@ contract kernel {
             shoesManager.country,
             shoesManager.bornDate
         );
+        managerArray.push(_targetAddress);
+        managerCount++;
     }
 
     function delShoesManager(address targetAddress) public isContractOwner {
@@ -326,6 +334,8 @@ contract kernel {
             shoesDistributor.country,
             shoesDistributor.bornDate
         );
+        distributorArray.push(_targetAddress);
+        distributorCount++;
     }
 
     function delShoesDistributor(address targetAddress) public isShoesManager {

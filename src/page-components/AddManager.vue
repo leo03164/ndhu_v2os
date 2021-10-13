@@ -30,7 +30,7 @@
             <img src="../assets/003.png" class="table-img" alt="" />
           </Col>
           <Col span="4" class="table-content">{{ manager.UID }}</Col>
-          <Col span="7" class="table-content">{{ manager.ethAddress }}</Col>
+          <Col span="7" class="table-content">{{ manager.chainAddress }}</Col>
           <Col span="4" class="table-content">{{ manager.country }}</Col>
           <Col span="4" class="table-content">{{ manager.bornDate }}</Col>
         </Row>
@@ -61,27 +61,7 @@ export default {
     return {
       isFormShow: false,
       managerCount: 0,
-      managerList: [],
-      eventParserMethodSignature: [
-        {
-          type: "string",
-          name: "UID"
-        },
-        {
-          type: "address",
-          name: "manager"
-        },
-        {
-          type: "string",
-          name: "country"
-        },
-        {
-          type: "uint256",
-          name: "bornDate"
-        }
-      ],
-      decodeTopics:
-        "0x78aa96c6058bebd04e5a6e04045c27bb203e090e27a0d222dfcec95ac3f4438f"
+      managerList: []
     };
   },
   computed: {
@@ -102,44 +82,36 @@ export default {
         console.log(error);
       }
     },
-    async parserLog() {
+    async loadManagerData() {
+      if (this.managerCount === 0) {
+        return;
+      }
+
       let i;
-      const maxLogs = localStorage.getItem("logsNum");
+      let managerIds = [];
+      let managerIdsPromiseArr = [];
 
-      // decode data from localstorage
-      for (i = 0; i < maxLogs; i += 1) {
-        const logData = JSON.parse(localStorage.getItem(i));
+      for (i = 0; i < this.managerCount; i += 1) {
+        managerIdsPromiseArr.push(this.contract.methods.managerArray(i).call());
+      }
+      managerIds = await Promise.all(managerIdsPromiseArr);
 
-        // check the event that is we want
-        if (!logData.topics.includes(this.decodeTopics)) {
-          continue;
+      for (i = 0; i < managerIds.length; i += 1) {
+        const managerInfo = await this.contract.methods
+          .managerList(managerIds[i])
+          .call();
+
+        if (managerInfo.isBan === false) {
+          this.managerList.push(managerInfo);
         }
-
-        // decode event and get product id
-        const {
-          UID,
-          manager,
-          country,
-          bornDate
-        } = await web3.eth.abi.decodeLog(
-          this.eventParserMethodSignature,
-          logData.data,
-          logData.topics
-        );
-
-        const newManager = {};
-        newManager.UID = UID;
-        newManager.ethAddress = manager;
-        newManager.country = country;
-        newManager.bornDate = bornDate;
-
-        this.managerList.push(newManager);
-        this.managerCount++;
       }
     }
   },
   async created() {
-    await this.parserLog();
+    this.managerCount = Number(
+      await this.contract.methods.managerCount().call()
+    );
+    await this.loadManagerData();
   }
 };
 </script>
