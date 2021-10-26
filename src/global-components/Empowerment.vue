@@ -59,9 +59,6 @@ export default {
     close() {
       this.$emit("close");
     }
-  },
-  async created() {
-    console.log("distributorList", this.getDistributorList);
   }
 };
 </script>

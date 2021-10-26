@@ -41,9 +41,6 @@ const store = new Vuex.Store({
 
             console.log('Current Account is: ', account[0]);
         },
-        async initContractLogs() {
-            await Contract.subscribeContract();
-        },
         updateDistributorList(context, payload) {
             context.commit('setDistributorList', payload);
         }

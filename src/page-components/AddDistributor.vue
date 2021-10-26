@@ -119,8 +119,6 @@ export default {
           this.distributorList.push(distributorInfo);
         }
       }
-
-      console.log("this.distributorList", this.distributorList);
     }
   },
   async created() {

@@ -1364,39 +1364,6 @@ export default {
             contractAddress
         );
 	},
-	// listener blockchain event from 0x0 to latest
-	async subscribeContract() {
-		let logsNum = 0;
-		let previousBlockNumber;
-      var subscription = web3.eth
-        .subscribe("logs", {
-          fromBlock: "0x0",
-          toBlock: "latest",
-          address: contractAddress
-        })
-		  .on("data", log => {
-			  
-			  if (logsNum !== 0) {
-				  if (previousBlockNumber !== log.blockNumber) {
-					const logObject = {}
-					logObject.data = log.data;
-					logObject.topics = log.topics;
-					localStorage.setItem(logsNum++, JSON.stringify(logObject));
-					localStorage.setItem('logsNum', logsNum);
-				  }
-			  } else {
-			  	// record event data to localstorage
-				const logObject = {}
-			  	logObject.data = log.data;
-			  	logObject.topics = log.topics;
-				localStorage.setItem(logsNum++, JSON.stringify(logObject));
-				localStorage.setItem('logsNum', logsNum);
-			  }
-			  previousBlockNumber = log.blockNumber;
-
-        });
-      console.log(subscription);
-	},
 	async loadDistributorData(contract) {
 	  
 	  const distributorCount = Number(

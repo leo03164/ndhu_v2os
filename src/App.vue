@@ -53,13 +53,12 @@ export default {
     return {};
   },
   methods: {
-    ...mapActions(["initIPFS", "initContract", "initContractLogs"])
+    ...mapActions(["initIPFS", "initContract"])
   },
   computed: {},
   async created() {
     await this.initIPFS();
     await this.initContract();
-    await this.initContractLogs();
   }
 };
 </script>
