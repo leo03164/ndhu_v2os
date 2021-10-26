@@ -9,7 +9,8 @@ const store = new Vuex.Store({
     state: {
         ipfs: {},
         contract: {},
-        currentAccount: ''
+        currentAccount: '',
+        distributorList: []
     },
     mutations: {
         setIPFS(state, payload) {
@@ -21,6 +22,9 @@ const store = new Vuex.Store({
         setContractCurrentAccount(state, payload) {
             state.contract.options.from = payload;
             state.currentAccount = payload;
+        },
+        setDistributorList(state, payload) {
+            state.distributorList = payload;
         }
     },
     actions: {
@@ -39,6 +43,14 @@ const store = new Vuex.Store({
         },
         async initContractLogs() {
             await Contract.subscribeContract();
+        },
+        updateDistributorList(context, payload) {
+            context.commit('setDistributorList', payload);
+        }
+    },
+    getters: {
+        getDistributorList: state => {
+            return state.distributorList;
         }
     }
 })

@@ -1396,5 +1396,39 @@ export default {
 
         });
       console.log(subscription);
-	}
+	},
+	async loadDistributorData(contract) {
+	  
+	  const distributorCount = Number(
+        await contract.methods.distributorCount().call()
+	  );
+		
+      if (distributorCount === 0) {
+        return;
+      }
+
+      let i;
+      let distributorIds = [];
+      let distributorIdsPromiseArr = [];
+
+      for (i = 0; i < distributorCount; i += 1) {
+        distributorIdsPromiseArr.push(
+          contract.methods.distributorArray(i).call()
+        );
+	  }
+		
+	  distributorIds = await Promise.all(distributorIdsPromiseArr);
+	  let distributorList = [];
+
+      for (i = 0; i < distributorIds.length; i += 1) {
+        const distributorInfo = await contract.methods
+          .distributorList(distributorIds[i])
+          .call();
+
+        if (distributorInfo.isBan === false) {
+          distributorList.push(distributorInfo);
+        }
+	  }
+	  return distributorList;
+    }
 }

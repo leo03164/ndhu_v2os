@@ -30,7 +30,9 @@
             <img src="../assets/003.png" class="table-img" alt="" />
           </Col>
           <Col span="4" class="table-content">{{ distributor.UID }}</Col>
-          <Col span="7" class="table-content">{{ distributor.ethAddress }}</Col>
+          <Col span="7" class="table-content">{{
+            distributor.chainAddress
+          }}</Col>
           <Col span="4" class="table-content">{{ distributor.country }}</Col>
           <Col span="4" class="table-content">{{ distributor.bornDate }}</Col>
         </Row>
@@ -53,7 +55,7 @@
 <script>
 import SmallCard from "@/ui-components/SmallCard.vue";
 import AddAccountCard from "@/global-components/AddAccountCard.vue";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "addDistributor",
@@ -61,29 +63,17 @@ export default {
     return {
       isFormShow: false,
       distributorCount: 0,
-      distributorList: [],
-      // need to change here
-      eventParserMethodSignature: [
-        {
-          type: "string",
-          name: "UID"
-        },
-        {
-          type: "address",
-          name: "distributor"
-        },
-        {
-          type: "string",
-          name: "country"
-        },
-        {
-          type: "uint256",
-          name: "bornDate"
-        }
-      ],
-      decodeTopics:
-        "0xfc6e7d040a8092cf9d77373a8532258ad9b19d874605c3ee5d8b2a9330559b1e"
+      distributorList: []
     };
+  },
+  watch: {
+    distributorList: {
+      handler: function(newValue) {
+        this.updateDistributorList(this.distributorList);
+      },
+      immediate: true,
+      deep: true
+    }
   },
   computed: {
     ...mapState(["contract"])
@@ -93,6 +83,7 @@ export default {
     AddAccountCard
   },
   methods: {
+    ...mapActions(["updateDistributorList"]),
     async addShoesDistributor(formItem) {
       try {
         // set type 0x2 because of EIP1599
@@ -103,45 +94,40 @@ export default {
         console.log(error);
       }
     },
-    // 可以再精簡
-    async parserLog() {
-      let i;
-      const maxLogs = localStorage.getItem("logsNum");
-
-      // decode data from localstorage
-      for (i = 0; i < maxLogs; i += 1) {
-        const logData = JSON.parse(localStorage.getItem(i));
-
-        // check the event that is we want
-        if (!logData.topics.includes(this.decodeTopics)) {
-          continue;
-        }
-
-        // decode event and get product id
-        const {
-          UID,
-          distributor,
-          country,
-          bornDate
-        } = await web3.eth.abi.decodeLog(
-          this.eventParserMethodSignature,
-          logData.data,
-          logData.topics
-        );
-
-        const newDistributor = {};
-        newDistributor.UID = UID;
-        newDistributor.ethAddress = distributor;
-        newDistributor.country = country;
-        newDistributor.bornDate = bornDate;
-
-        this.distributorList.push(newDistributor);
-        this.distributorCount++;
+    async loadDistributorData() {
+      if (this.distributorCount === 0) {
+        return;
       }
+
+      let i;
+      let distributorIds = [];
+      let distributorIdsPromiseArr = [];
+
+      for (i = 0; i < this.distributorCount; i += 1) {
+        distributorIdsPromiseArr.push(
+          this.contract.methods.distributorArray(i).call()
+        );
+      }
+      distributorIds = await Promise.all(distributorIdsPromiseArr);
+
+      for (i = 0; i < distributorIds.length; i += 1) {
+        const distributorInfo = await this.contract.methods
+          .distributorList(distributorIds[i])
+          .call();
+
+        if (distributorInfo.isBan === false) {
+          this.distributorList.push(distributorInfo);
+        }
+      }
+
+      console.log("this.distributorList", this.distributorList);
     }
   },
   async created() {
-    await this.parserLog();
+    this.distributorCount = Number(
+      await this.contract.methods.distributorCount().call()
+    );
+    await this.loadDistributorData();
   }
 };
 </script>

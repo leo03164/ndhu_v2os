@@ -13,10 +13,10 @@
           not-found-text="distributor not found"
         >
           <Option
-            v-for="distributor in distributorList"
-            :key="distributor.ethAddress"
-            :value="distributor.ethAddress"
-            >{{ distributor.ethAddress }}</Option
+            v-for="distributor in getDistributorList"
+            :key="distributor.chainAddress"
+            :value="distributor.chainAddress"
+            >{{ distributor.chainAddress }}</Option
           >
         </Select>
       </FormItem>
@@ -25,7 +25,7 @@
 </template>
 <script>
 import ActionSheet from "@/ui-components/ActionSheet.vue";
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "Empowerment",
@@ -38,31 +38,12 @@ export default {
   data() {
     return {
       distributorList: [],
-      selectedDistributor: "",
-      decodeTopics:
-        "0xfc6e7d040a8092cf9d77373a8532258ad9b19d874605c3ee5d8b2a9330559b1e",
-      eventParserMethodSignature: [
-        {
-          type: "string",
-          name: "UID"
-        },
-        {
-          type: "address",
-          name: "distributor"
-        },
-        {
-          type: "string",
-          name: "country"
-        },
-        {
-          type: "uint256",
-          name: "bornDate"
-        }
-      ]
+      selectedDistributor: ""
     };
   },
   computed: {
-    ...mapState(["contract"])
+    ...mapState(["contract"]),
+    ...mapGetters(["getDistributorList"])
   },
   methods: {
     async transferItemToDistributor() {
@@ -75,48 +56,12 @@ export default {
         console.log(error);
       }
     },
-    // move to vuex and save data to vuex
-    async parserLog() {
-      let i;
-      const maxLogs = localStorage.getItem("logsNum");
-
-      // decode data from localstorage
-      for (i = 0; i < maxLogs; i += 1) {
-        const logData = JSON.parse(localStorage.getItem(i));
-
-        // check the event that is we want
-        if (!logData.topics.includes(this.decodeTopics)) {
-          continue;
-        }
-
-        // decode event and get product id
-        const {
-          UID,
-          distributor,
-          country,
-          bornDate
-        } = await web3.eth.abi.decodeLog(
-          this.eventParserMethodSignature,
-          logData.data,
-          logData.topics
-        );
-
-        const newDistributor = {};
-        newDistributor.UID = UID;
-        newDistributor.ethAddress = distributor;
-        newDistributor.country = country;
-        newDistributor.bornDate = bornDate;
-
-        this.distributorList.push(newDistributor);
-        this.distributorCount++;
-      }
-    },
     close() {
       this.$emit("close");
     }
   },
   async created() {
-    await this.parserLog();
+    console.log("distributorList", this.getDistributorList);
   }
 };
 </script>
