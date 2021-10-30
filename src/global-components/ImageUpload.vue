@@ -61,7 +61,7 @@ export default {
 .upload-image-container {
   width: 100%;
   height: 100%;
-  padding: 0 30px;
+  object-fit: contain;
 }
 .input-bg {
   max-width: 150px;
