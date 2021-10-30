@@ -45,7 +45,7 @@ export default {
   top: 15vh;
   float: left;
 
-  z-index: 999px;
+  z-index: 999;
   background-color: #fff;
 
   box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.3);
