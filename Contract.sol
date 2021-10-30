@@ -28,13 +28,19 @@ contract kernel {
         address[] ownerHistory; // 持有者歷史
     }
 
-    // at here manager is include distributor
+    // at here Manager struct is using to present manager and distributor
     struct Manager {
         string UID; // 公司編號
         address chainAddress; // 區塊鏈位址
         string country; // 隸屬國家
         uint256 bornDate; // 新增時間
         bool isBan; // 是否被禁用
+    }
+
+    // ReportReason struct is using to record the report that user provide
+    struct ReportReason {
+        string imagePath; // 圖片位於星際檔案系統的位置
+        string reason; // 檢舉原因
     }
 
     event addShoesEvent(bytes32 id, address who);
@@ -117,12 +123,23 @@ contract kernel {
     // customer shoes ids
     mapping(address => bytes32[]) public customerShoesIds;
 
+    // record customer shoes count
     mapping(address => uint64) public customerShoesCount;
 
+    // record the shoes is already paid
     mapping(bytes32 => bool) public isShoesPaid;
 
+    // use to record all managers
     address[] public managerArray;
+
+    // use to record all distributorArray
     address[] public distributorArray;
+
+    // record all report
+    bytes32[] private shoesReportList;
+
+    // record report reason
+    mapping(bytes32 => ReportReason) private reportReason;
 
     uint16 public managerCount = 0;
     uint16 public distributorCount = 0;
@@ -307,6 +324,15 @@ contract kernel {
         shoesList[targetId].state = State.BAN;
         shoesBlackList[targetId] = true;
 
+        uint16 i;
+        for (i = 0; i < shoesReportList.length; i++) {
+            if (shoesReportList[i] == targetId) {
+                delete shoesReportList[i];
+                break;
+            }
+        }
+        delete reportReason[targetId];
+
         emit addShoesToBlackListEvent(targetId, msg.sender, reason);
     }
 
@@ -385,6 +411,24 @@ contract kernel {
             i++;
         }
         return i;
+    }
+
+    function getShoesReportList()
+        public
+        view
+        isShoesManager
+        returns (bytes32[] memory)
+    {
+        return shoesReportList;
+    }
+
+    function getReportReason(bytes32 shoesId)
+        public
+        view
+        isShoesManager
+        returns (ReportReason memory)
+    {
+        return reportReason[shoesId];
     }
 
     // ------------ distributor code start ------------
@@ -569,6 +613,16 @@ contract kernel {
         return false;
     }
 
+    function reportShoes(
+        bytes32 shoesId,
+        string memory imagePath,
+        string memory reason
+    ) public {
+        shoesReportList.push(shoesId);
+        reportReason[shoesId].imagePath = imagePath;
+        reportReason[shoesId].reason = reason;
+    }
+
     // ------------ buyer code start ------------
 
     // need to set a time limit for buyer if other people want to buy
@@ -625,18 +679,6 @@ contract kernel {
         shoesList[shoesId].state = State.TRANSFERABLE;
         shoesPrice[shoesId] = 0;
         isShoesPaid[shoesId] = false;
-    }
-
-    bytes32[] reportList;
-    mapping(bytes32 => string) reportReason;
-
-    // report order
-    function reportOrder(bytes32 shoesId, string memory reason)
-        public
-        isBuyer(shoesId)
-    {
-        reportReason[shoesId] = reason;
-        reportList.push(shoesId);
     }
 
     function getContractBalance() public view returns (uint256) {
