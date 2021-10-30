@@ -35,6 +35,10 @@
                 <Icon type="ios-search"></Icon>
                 <router-link to="/customer/search">搜尋商品</router-link>
               </MenuItem>
+              <MenuItem name="1-8">
+                <Icon type="ios-search"></Icon>
+                <router-link to="/admin/report-list">檢舉列表</router-link>
+              </MenuItem>
             </Menu>
             <div slot="trigger"></div>
           </Sider>

@@ -37,6 +37,10 @@ export default new Router({
       name: 'Search',      
       component: () => import(/* webpackChunkName: "about" */ './page-components/Search')
     },
+    {
+      path: '/admin/report-list',
+      name: 'ReportList',      
+      component: () => import(/* webpackChunkName: "about" */ './page-components/ReportList')
     }
   ]
 })
