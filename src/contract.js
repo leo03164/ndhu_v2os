@@ -7,7 +7,7 @@ if (typeof web3 !== "undefined") {
   alert("Can Not Find Metamsk!");
 }
 
-const contractAddress = "0xCD42b0a748B0DE3629432b8A0D76f14Fb075485e";
+const contractAddress = "0xD8e09d555741Af94C0C4c76C1024B12e0Cd11B4e";
 const abi = [
 	{
 		"inputs": [],
@@ -768,6 +768,37 @@ const abi = [
 	{
 		"inputs": [
 			{
+				"internalType": "bytes32",
+				"name": "shoesId",
+				"type": "bytes32"
+			}
+		],
+		"name": "getReportReason",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "imagePath",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "reason",
+						"type": "string"
+					}
+				],
+				"internalType": "struct kernel.ReportReason",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "string",
 				"name": "SN",
 				"type": "string"
@@ -808,6 +839,19 @@ const abi = [
 				"internalType": "address[]",
 				"name": "",
 				"type": "address[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getShoesReportList",
+		"outputs": [
+			{
+				"internalType": "bytes32[]",
+				"name": "",
+				"type": "bytes32[]"
 			}
 		],
 		"stateMutability": "view",
@@ -1081,11 +1125,16 @@ const abi = [
 			},
 			{
 				"internalType": "string",
+				"name": "imagePath",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
 				"name": "reason",
 				"type": "string"
 			}
 		],
-		"name": "reportOrder",
+		"name": "reportShoes",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
