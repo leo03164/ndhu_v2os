@@ -33,7 +33,6 @@ export default {
   computed: {},
   methods: {
     onDecode(result) {
-      // 可以work
       this.$emit("finished", result);
     },
     async onInit(promise) {
