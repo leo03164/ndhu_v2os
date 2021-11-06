@@ -144,6 +144,9 @@ contract kernel {
     uint16 public managerCount = 0;
     uint16 public distributorCount = 0;
 
+    // if the seller sell fake shoes, add it to black list
+    bytes32[] public shoesBlackList;
+
     modifier isContractOwner() {
         require(msg.sender == contractOwner, "You are not Contract Owner");
         _;
@@ -312,9 +315,6 @@ contract kernel {
         emit delShoesEvent(shoesId, msg.sender, reason);
     }
 
-    // if the seller sell fake shoes, add it to black list
-    mapping(bytes32 => bool) shoesBlackList;
-
     function addToBlackList(bytes32 targetId, string memory reason)
         public
         isShoesManager
@@ -322,7 +322,7 @@ contract kernel {
     {
         // set state to BAN
         shoesList[targetId].state = State.BAN;
-        shoesBlackList[targetId] = true;
+        shoesBlackList.push(targetId);
 
         uint16 i;
         for (i = 0; i < shoesReportList.length; i++) {
@@ -515,7 +515,10 @@ contract kernel {
     }
 
     modifier isShoesNotInBlackList(bytes32 shoesId) {
-        require(!shoesBlackList[shoesId], "This shoes is in black list !");
+        require(
+            !(shoesList[shoesId].state == State.BAN),
+            "This shoes is in black list !"
+        );
         _;
     }
 
