@@ -98,7 +98,6 @@ export default {
     }
   },
   methods: {
-    // parser log from blockchain event
     sellHandler(product) {
       this.currentProduct = product;
       this.isShowSellModal = true;
@@ -116,8 +115,10 @@ export default {
 
         const shoes = await this.contract.methods.shoesList(shoesId).call();
         shoes.shoesId = shoesId;
-        console.log("shoes: ", shoes);
-        this.productList.push(shoes);
+
+        if (shoes.owner === this.$store.state.currentAccount) {
+          this.productList.push(shoes);
+        }
       }
     }
   },
