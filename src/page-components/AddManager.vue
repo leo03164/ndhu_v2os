@@ -54,6 +54,7 @@
 import SmallCard from "@/ui-components/SmallCard.vue";
 import AddAccountCard from "@/global-components/AddAccountCard.vue";
 import { mapState } from "vuex";
+import { timestampToDate } from "@/utils";
 
 export default {
   name: "AddManager",
@@ -102,6 +103,7 @@ export default {
           .call();
 
         if (managerInfo.isBan === false) {
+          managerInfo.bornDate = timestampToDate(managerInfo.bornDate);
           this.managerList.push(managerInfo);
         }
       }

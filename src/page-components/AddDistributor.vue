@@ -56,6 +56,7 @@
 import SmallCard from "@/ui-components/SmallCard.vue";
 import AddAccountCard from "@/global-components/AddAccountCard.vue";
 import { mapState, mapActions } from "vuex";
+import { timestampToDate } from "@/utils";
 
 export default {
   name: "addDistributor",
@@ -116,6 +117,7 @@ export default {
           .call();
 
         if (distributorInfo.isBan === false) {
+          distributorInfo.bornDate = timestampToDate(distributorInfo.bornDate);
           this.distributorList.push(distributorInfo);
         }
       }
