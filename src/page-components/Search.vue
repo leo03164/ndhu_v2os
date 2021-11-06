@@ -20,6 +20,8 @@
         <Input
           search
           @on-search="searchHandler()"
+          @on-click="isShowQrcodeScannerHandler"
+          icon="md-camera ivu-input-icon"
           enter-button="Search"
           placeholder="Enter something..."
           v-model="searchId"
@@ -35,7 +37,7 @@
           <Col span="4" class="table-hearder">Action</Col>
         </Row>
         <!-- shoes data preview -->
-        <Row class="table-content-container" v-if="isShowData">
+        <Row class="table-content-container" v-if="isShowSearchData">
           <Col span="2">
             <img
               :src="`https://ipfs.io/ipfs/${shoesData.CID}`"
@@ -60,7 +62,11 @@
         </Row>
       </div>
     </Card>
-    <Modal v-model="isShowDetail" @on-ok="ok" @on-cancel="cancel">
+    <Modal
+      v-model="isShowDetail"
+      @on-ok="closeShoesDetailPage"
+      @on-cancel="closeShoesDetailPage"
+    >
       <div class="modal-container" v-if="isShowDetail">
         <div class="img-block">
           <img
@@ -108,6 +114,12 @@
         </div>
       </div>
     </Modal>
+
+    <QrcodeScanner
+      :isShowQrcodeScanner="isQrcodeScannerEnable"
+      @finished="decodeFinished"
+    >
+    </QrcodeScanner>
   </div>
 </template>
 <script>
@@ -115,9 +127,10 @@ import SmallCard from "@/ui-components/SmallCard.vue";
 import ImageUpload from "@/global-components/ImageUpload.vue";
 import { stateDescription } from "@/constant.json";
 import { mapState } from "vuex";
+import QrcodeScanner from "@/global-components/QrcodeScanner.vue";
 
 export default {
-  components: { SmallCard, ImageUpload },
+  components: { SmallCard, ImageUpload, QrcodeScanner },
   data() {
     return {
       cardData: [
@@ -138,27 +151,29 @@ export default {
       shoesData: {},
       stateDescription,
       isShowDetail: false,
-      isShowData: false,
+      isShowSearchData: false,
       isShowReportPage: false,
       imageIpfsPath: "",
-      reportReason: ""
+      reportReason: "",
+      isQrcodeScannerEnable: false
     };
   },
   computed: {
-    ...mapState(["contract", "ipfs"])
+    ...mapState(["contract", "ipfs"]),
+    currentIcon() {
+      return this.isQrcodeScannerEnable ? "md-camera" : "ios-eye-off";
+    }
   },
   methods: {
     async searchHandler() {
       this.shoesData = await this.contract.methods
         .shoesList(this.searchId)
         .call();
-      this.isShowData = true;
+      this.shoesData.shoesId = this.searchId;
+      this.searchId = "";
+      this.isShowSearchData = true;
     },
-    ok() {
-      this.$Message.info("Clicked ok");
-    },
-    cancel() {
-      this.$Message.info("Clicked cancel");
+    closeShoesDetailPage() {
       this.isShowDetail = false;
     },
     showShoesDetailModal() {
@@ -172,8 +187,20 @@ export default {
     },
     async report() {
       await this.contract.methods
-        .reportShoes(this.searchId, this.imageIpfsPath, this.reportReason)
+        .reportShoes(
+          this.shoesData.shoesId,
+          this.imageIpfsPath,
+          this.reportReason
+        )
         .send({ type: "0x2" });
+    },
+    async isShowQrcodeScannerHandler() {
+      this.isQrcodeScannerEnable = !this.isQrcodeScannerEnable;
+    },
+    async decodeFinished(result) {
+      this.searchId = result;
+      this.isQrcodeScannerEnable = false;
+      await this.searchHandler();
     }
   }
 };
@@ -266,5 +293,11 @@ export default {
 .report-reason-title {
   width: 100%;
   height: 20px;
+}
+.searchBlock >>> .ivu-input-icon {
+  right: 80px !important;
+}
+.searchBlock >>> .ivu-input-icon:hover {
+  cursor: pointer !important;
 }
 </style>
