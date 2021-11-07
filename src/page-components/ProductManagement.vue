@@ -16,7 +16,17 @@
           :key="index"
         ></SmallCard>
       </div>
-
+      <div class="searchBlock">
+        <Input
+          search
+          @on-search="searchHandler()"
+          @on-click="isShowQrcodeScannerHandler"
+          icon="md-camera ivu-input-icon"
+          enter-button="Search"
+          placeholder="Please input shoesId here..."
+          v-model="searchId"
+        />
+      </div>
       <div class="table-card">
         <Row>
           <Col span="2" class="table-hearder"></Col>
@@ -74,14 +84,12 @@
           @close="isTransferFormShow = false"
         >
         </Transfer>
-
-        <Icon
-          type="md-add-circle"
-          class="add-icon"
-          size="64"
-          @click="toggoleRegisterFormShow"
-        />
       </div>
+      <QrcodeScanner
+        :isShowQrcodeScanner="isQrcodeScannerEnable"
+        @finished="decodeFinished"
+      >
+      </QrcodeScanner>
     </Card>
   </div>
 </template>
@@ -91,9 +99,10 @@ import SmallCard from "@/ui-components/SmallCard.vue";
 import ActionSheet from "@/ui-components/ActionSheet.vue";
 import Transfer from "@/global-components/Transfer.vue";
 import { stateDescription } from "@/constant.json";
+import QrcodeScanner from "@/global-components/QrcodeScanner.vue";
 
 export default {
-  components: { SmallCard, ActionSheet, Transfer },
+  components: { SmallCard, ActionSheet, Transfer, QrcodeScanner },
   data() {
     return {
       cardData: [
@@ -118,7 +127,9 @@ export default {
       shoesId: "",
       shoesCount: 0,
       shoesIds: [],
-      stateDescription
+      stateDescription,
+      searchId: "",
+      isQrcodeScannerEnable: false
     };
   },
   computed: {
@@ -128,9 +139,6 @@ export default {
     }
   },
   methods: {
-    async toggoleRegisterFormShow() {
-      this.isRegisterFormShow = !this.isRegisterFormShow;
-    },
     async registerProduct() {
       try {
         if (this.shoesId !== "") {
@@ -170,6 +178,19 @@ export default {
         );
       }
       this.productList = await Promise.all(shoesListPromiseArr);
+    },
+    async searchHandler() {
+      this.isRegisterFormShow = true;
+      this.shoesId = this.searchId;
+      this.searchId = "";
+    },
+    async isShowQrcodeScannerHandler() {
+      this.isQrcodeScannerEnable = !this.isQrcodeScannerEnable;
+    },
+    async decodeFinished(result) {
+      this.shoesId = result;
+      this.isQrcodeScannerEnable = false;
+      this.isRegisterFormShow = true;
     }
   },
   async created() {
@@ -223,5 +244,15 @@ export default {
 }
 .mg-t-n5 {
   margin-top: -5px;
+}
+.searchBlock {
+  margin-top: 25px;
+  padding: 0 20%;
+}
+.searchBlock >>> .ivu-input-icon {
+  right: 80px !important;
+}
+.searchBlock >>> .ivu-input-icon:hover {
+  cursor: pointer !important;
 }
 </style>
