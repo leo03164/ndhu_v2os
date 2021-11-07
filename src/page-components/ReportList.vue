@@ -89,6 +89,7 @@ import SmallCard from "@/ui-components/SmallCard.vue";
 import ImageUpload from "@/global-components/ImageUpload.vue";
 import { stateDescription } from "@/constant.json";
 import { mapState } from "vuex";
+import { getShoesIdByAttribute } from "@/utils";
 
 export default {
   components: { SmallCard, ImageUpload },
@@ -127,11 +128,7 @@ export default {
         .call();
       this.isShowData = true;
     },
-    ok() {
-      this.$Message.info("Clicked ok");
-    },
     cancel() {
-      this.$Message.info("Clicked cancel");
       this.isShowReportReason = false;
     },
     showReportReasonModal(shoesData) {
@@ -147,14 +144,19 @@ export default {
         .send({ type: "0x2" });
     },
     async getReportList() {
+      // use this method getShoesIdByAttribute to instead
       const shoesIds = await this.contract.methods.getShoesReportList().call();
 
       let i;
       for (i = 0; i < shoesIds.length; i += 1) {
         const shoes = await this.contract.methods.shoesList(shoesIds[i]).call();
-        const shoesAttributeString = `${shoes.SN}${shoes.name}${shoes.company}`;
-        const shoesId = web3.utils.keccak256(shoesAttributeString);
-        shoes.shoesId = shoesId;
+
+        shoes.shoesId = getShoesIdByAttribute(
+          shoes.SN,
+          shoes.name,
+          shoes.company
+        );
+
         const {
           imagePath,
           reason

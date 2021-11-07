@@ -30,6 +30,7 @@
 <script>
 import ActionSheet from "@/ui-components/ActionSheet.vue";
 import { mapState } from "vuex";
+import { getShoesIdByAttribute } from "@/utils";
 
 export default {
   name: "Transfer",
@@ -73,14 +74,12 @@ export default {
       this.$emit("close");
     }
   },
-  async created() {
-    this.shoesId = await this.contract.methods
-      .getShoesIdByShoesAttribute(
-        this.product.SN,
-        this.product.name,
-        this.product.company
-      )
-      .call();
+  created() {
+    this.shoesId = getShoesIdByAttribute(
+      this.product.SN,
+      this.product.name,
+      this.product.company
+    );
   }
 };
 </script>
