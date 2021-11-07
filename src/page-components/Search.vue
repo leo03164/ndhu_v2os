@@ -23,11 +23,12 @@
           @on-click="isShowQrcodeScannerHandler"
           icon="md-camera ivu-input-icon"
           enter-button="Search"
-          placeholder="Enter something..."
+          placeholder="Please input shoesId here..."
           v-model="searchId"
         />
       </div>
       <div class="table-card">
+        <!-- table header -->
         <Row>
           <Col span="2" class="table-hearder"></Col>
           <Col span="4" class="table-hearder">SN</Col>
@@ -62,6 +63,7 @@
         </Row>
       </div>
     </Card>
+    <!-- show product detail -->
     <Modal
       v-model="isShowDetail"
       @on-ok="closeShoesDetailPage"
@@ -82,7 +84,9 @@
           <p class="info-block-text">
             Product Company：{{ shoesData.company }}
           </p>
-          <p class="info-block-text">Product State：{{ shoesData.state }}</p>
+          <p class="info-block-text">
+            Product State：{{ stateDescription[shoesData.state] }}
+          </p>
           <p class="info-block-text">Product Owner：{{ shoesData.owner }}</p>
           <p class="info-block-text">
             Product Last Location：{{ shoesData.lastBuyerLocation }}
@@ -91,7 +95,7 @@
         </div>
       </div>
     </Modal>
-
+    <!-- show report page -->
     <Modal
       v-model="isShowReportPage"
       @on-ok="report"
