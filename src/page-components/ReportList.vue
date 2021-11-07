@@ -21,7 +21,7 @@
           search
           @on-search="searchHandler()"
           enter-button="Search"
-          placeholder="Enter something..."
+          placeholder="Please input shoesId here..."
           v-model="searchId"
         />
       </div>
