@@ -6,29 +6,29 @@
           <Sider breakpoint="md" collapsible :width="340" class="aside-navbar">
             <Menu active-name="1-2" theme="dark" width="auto" class="menu-item">
               <MenuItem name="1-1">
-                <Icon type="ios-settings"></Icon>
+                <Icon type="md-person-add" />
                 <router-link to="/admin/manager/create">新增管理員</router-link>
               </MenuItem>
               <MenuItem name="1-2">
-                <Icon type="ios-search"></Icon>
+                <Icon type="ios-ribbon" />
                 <router-link to="/admin/distributor/create"
                   >新增經銷商</router-link
                 >
               </MenuItem>
               <MenuItem name="1-3">
-                <Icon type="ios-navigate"></Icon>
+                <Icon type="md-clipboard" />
                 <router-link to="/admin/product/create">新增商品</router-link>
               </MenuItem>
               <MenuItem name="1-4">
-                <Icon type="ios-settings"></Icon>
+                <Icon type="ios-hand" />
                 <router-link to="/product/ban">黑名單</router-link>
               </MenuItem>
               <MenuItem name="1-5">
-                <Icon type="ios-settings"></Icon>
+                <Icon type="md-cube" />
                 <router-link to="/admin/product/sell">商品販售</router-link>
               </MenuItem>
               <MenuItem name="1-6">
-                <Icon type="ios-settings"></Icon>
+                <Icon type="ios-construct" />
                 <router-link to="/customer/product">商品管理</router-link>
               </MenuItem>
               <MenuItem name="1-7">
@@ -36,7 +36,7 @@
                 <router-link to="/product/search">搜尋商品</router-link>
               </MenuItem>
               <MenuItem name="1-8">
-                <Icon type="ios-search"></Icon>
+                <Icon type="ios-list-box" />
                 <router-link to="/admin/report-list">檢舉列表</router-link>
               </MenuItem>
             </Menu>
