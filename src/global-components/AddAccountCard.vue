@@ -50,6 +50,7 @@ export default {
     return {
       countryList: contry,
       formItem: {
+        avatarPath: "",
         UID: "",
         address: "",
         country: ""
@@ -72,7 +73,7 @@ export default {
       this.$emit("close");
     },
     setImageIpfsPath(path) {
-      this.imgPath = path;
+      this.formItem.avatarPath = path;
     }
   }
 };

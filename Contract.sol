@@ -30,6 +30,7 @@ contract kernel {
 
     // at here Manager struct is using to present manager and distributor
     struct Manager {
+        string avatar; // 大頭貼位址
         string UID; // 公司編號
         address chainAddress; // 區塊鏈位址
         string country; // 隸屬國家
@@ -154,6 +155,7 @@ contract kernel {
 
     // headquarters can assign management to its sub-company
     function addShoesManager(
+        string memory _avatarPath,
         string memory _UID,
         address _targetAddress,
         string memory _country
@@ -163,6 +165,7 @@ contract kernel {
             "target is already a manager"
         );
         Manager memory shoesManager;
+        shoesManager.avatar = _avatarPath;
         shoesManager.UID = _UID;
         shoesManager.chainAddress = _targetAddress;
         shoesManager.country = _country;
@@ -337,6 +340,7 @@ contract kernel {
     }
 
     function addShoesDistributor(
+        string memory _avatarPath,
         string memory _UID,
         address _targetAddress,
         string memory _country
@@ -347,6 +351,7 @@ contract kernel {
         );
 
         Manager memory shoesDistributor;
+        shoesDistributor.avatar = _avatarPath;
         shoesDistributor.UID = _UID;
         shoesDistributor.chainAddress = _targetAddress;
         shoesDistributor.country = _country;

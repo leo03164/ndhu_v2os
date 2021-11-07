@@ -20,6 +20,7 @@
           <Col span="7" class="table-hearder">Eth Address</Col>
           <Col span="4" class="table-hearder">Country</Col>
           <Col span="4" class="table-hearder">Date</Col>
+          <Col span="3" class="table-hearder">Action</Col>
         </Row>
         <Row
           class="table-content-container"
@@ -27,7 +28,11 @@
           :key="'distributor' + index"
         >
           <Col span="2">
-            <img src="../assets/003.png" class="table-img" alt="" />
+            <img
+              :src="`https://ipfs.io/ipfs/${distributor.avatar}`"
+              class="table-img"
+              alt=""
+            />
           </Col>
           <Col span="4" class="table-content">{{ distributor.UID }}</Col>
           <Col span="7" class="table-content">{{
@@ -89,7 +94,12 @@ export default {
       try {
         // set type 0x2 because of EIP1599
         await this.contract.methods
-          .addShoesDistributor(formItem.UID, formItem.address, formItem.country)
+          .addShoesDistributor(
+            formItem.avatarPath,
+            formItem.UID,
+            formItem.address,
+            formItem.country
+          )
           .send({ type: "0x2" });
       } catch (error) {
         console.log(error);
@@ -182,5 +192,8 @@ export default {
 }
 .add-product-container >>> .ivu-card-bordered {
   border: none;
+}
+.mg-t-n5 {
+  margin-top: -5px;
 }
 </style>
