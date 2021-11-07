@@ -7,7 +7,7 @@ if (typeof web3 !== "undefined") {
   alert("Can Not Find Metamsk!");
 }
 
-const contractAddress = "0x57be6CFf250f6e7cCB6D1ed650c70db5d0ea811B";
+const contractAddress = "0xfC9A5AB9635163461f06ae8e1bBbb36d15661aB8";
 const abi = [
 	{
 		"inputs": [],
