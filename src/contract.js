@@ -7,7 +7,7 @@ if (typeof web3 !== "undefined") {
   alert("Can Not Find Metamsk!");
 }
 
-const contractAddress = "0xD8e09d555741Af94C0C4c76C1024B12e0Cd11B4e";
+const contractAddress = "0x57be6CFf250f6e7cCB6D1ed650c70db5d0ea811B";
 const abi = [
 	{
 		"inputs": [],
@@ -413,6 +413,11 @@ const abi = [
 		"inputs": [
 			{
 				"internalType": "string",
+				"name": "_avatarPath",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
 				"name": "_UID",
 				"type": "string"
 			},
@@ -434,6 +439,11 @@ const abi = [
 	},
 	{
 		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_avatarPath",
+				"type": "string"
+			},
 			{
 				"internalType": "string",
 				"name": "_UID",
@@ -667,6 +677,11 @@ const abi = [
 		],
 		"name": "distributorList",
 		"outputs": [
+			{
+				"internalType": "string",
+				"name": "avatar",
+				"type": "string"
+			},
 			{
 				"internalType": "string",
 				"name": "UID",
@@ -944,6 +959,11 @@ const abi = [
 		"outputs": [
 			{
 				"internalType": "string",
+				"name": "avatar",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
 				"name": "UID",
 				"type": "string"
 			},
@@ -1173,6 +1193,38 @@ const abi = [
 	{
 		"inputs": [],
 		"name": "shoesBeforeRegisterCount",
+		"outputs": [
+			{
+				"internalType": "uint64",
+				"name": "",
+				"type": "uint64"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "shoesBlackList",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "shoesBlockCounter",
 		"outputs": [
 			{
 				"internalType": "uint64",

@@ -40,6 +40,9 @@
           }}</Col>
           <Col span="4" class="table-content">{{ distributor.country }}</Col>
           <Col span="4" class="table-content">{{ distributor.bornDate }}</Col>
+          <Col span="3" class="table-content mg-t-n5">
+            <Button @click="blockShoesDistributor(distributor)">封鎖</Button>
+          </Col>
         </Row>
         <Row class="table-content-container">
           <Col span="2">
@@ -131,6 +134,11 @@ export default {
           this.distributorList.push(distributorInfo);
         }
       }
+    },
+    async blockShoesDistributor(distributor) {
+      await this.contract.methods
+        .delShoesDistributor(distributor.chainAddress)
+        .send({ type: "0x2" });
     }
   },
   async created() {

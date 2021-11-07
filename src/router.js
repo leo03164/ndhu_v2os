@@ -33,7 +33,7 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './page-components/ProductManagement')
     },
     {
-      path: '/customer/search',
+      path: '/product/search',
       name: 'Search',      
       component: () => import(/* webpackChunkName: "about" */ './page-components/Search')
     },
@@ -41,6 +41,11 @@ export default new Router({
       path: '/admin/report-list',
       name: 'ReportList',      
       component: () => import(/* webpackChunkName: "about" */ './page-components/ReportList')
+    },
+    {
+      path: '/product/ban',
+      name: 'BlockList',      
+      component: () => import(/* webpackChunkName: "about" */ './page-components/BlockList')
     }
   ]
 })

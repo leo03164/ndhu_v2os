@@ -145,8 +145,9 @@ contract kernel {
     uint16 public managerCount = 0;
     uint16 public distributorCount = 0;
 
-    // if the seller sell fake shoes, add it to black list
+    // record state is Ban shoes
     bytes32[] public shoesBlackList;
+    uint64 public shoesBlockCounter;
 
     modifier isContractOwner() {
         require(msg.sender == contractOwner, "You are not Contract Owner");
@@ -326,6 +327,7 @@ contract kernel {
         // set state to BAN
         shoesList[targetId].state = State.BAN;
         shoesBlackList.push(targetId);
+        shoesBlockCounter++;
 
         uint16 i;
         for (i = 0; i < shoesReportList.length; i++) {
@@ -334,7 +336,6 @@ contract kernel {
                 break;
             }
         }
-        delete reportReason[targetId];
 
         emit addShoesToBlackListEvent(targetId, msg.sender, reason);
     }

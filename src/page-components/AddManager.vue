@@ -38,6 +38,9 @@
           <Col span="7" class="table-content">{{ manager.chainAddress }}</Col>
           <Col span="4" class="table-content">{{ manager.country }}</Col>
           <Col span="4" class="table-content">{{ manager.bornDate }}</Col>
+          <Col span="3" class="table-content mg-t-n5">
+            <Button @click="blockShoesManager(manager)">封鎖</Button>
+          </Col>
         </Row>
         <Row class="table-content-container">
           <Col span="2">
@@ -117,6 +120,11 @@ export default {
           this.managerList.push(managerInfo);
         }
       }
+    },
+    async blockShoesManager(manager) {
+      await this.contract.methods
+        .delShoesManager(manager.chainAddress)
+        .send({ type: "0x2" });
     }
   },
   async created() {

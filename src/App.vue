@@ -21,7 +21,7 @@
               </MenuItem>
               <MenuItem name="1-4">
                 <Icon type="ios-settings"></Icon>
-                <router-link to="/admin/product/ban">黑名單</router-link>
+                <router-link to="/product/ban">黑名單</router-link>
               </MenuItem>
               <MenuItem name="1-5">
                 <Icon type="ios-settings"></Icon>
@@ -33,7 +33,7 @@
               </MenuItem>
               <MenuItem name="1-7">
                 <Icon type="ios-search"></Icon>
-                <router-link to="/customer/search">搜尋商品</router-link>
+                <router-link to="/product/search">搜尋商品</router-link>
               </MenuItem>
               <MenuItem name="1-8">
                 <Icon type="ios-search"></Icon>
