@@ -7,7 +7,7 @@
     >
       <FormItem label="轉移模式">
         <RadioGroup v-model="mode">
-          <Radio label="face2Face">轉移至玩家</Radio>
+          <Radio label="face2Face">轉移至買家</Radio>
           <Radio label="proxy">轉移至代理</Radio>
         </RadioGroup>
       </FormItem>
