@@ -77,7 +77,7 @@ export default {
   },
   watch: {
     distributorList: {
-      handler: function(newValue) {
+      handler: function (newValue) {
         this.updateDistributorList(this.distributorList);
       },
       immediate: true,
