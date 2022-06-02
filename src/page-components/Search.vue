@@ -113,7 +113,7 @@
             type="textarea"
             :autosize="{ minRows: 3, maxRows: 5 }"
             placeholder="Enter your reson"
-            style="width: 100%;"
+            style="width: 100%"
           ></Input>
         </div>
       </div>
