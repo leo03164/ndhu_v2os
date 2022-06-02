@@ -157,10 +157,9 @@ export default {
           shoes.company
         );
 
-        const {
-          imagePath,
-          reason
-        } = await this.contract.methods.getReportReason(shoesIds[i]).call();
+        const { imagePath, reason } = await this.contract.methods
+          .getReportReason(shoesIds[i])
+          .call();
         shoes.imagePath = imagePath;
         shoes.reason = reason;
         if (shoes.SN !== "") {
