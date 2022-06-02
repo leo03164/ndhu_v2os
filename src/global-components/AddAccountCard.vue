@@ -41,14 +41,14 @@
   </div>
 </template>
 <script>
-import contry from "@/assets/shoes/country.json";
+import country from "@/assets/shoes/country.json";
 import ImageUpload from "@/global-components/ImageUpload.vue";
 
 export default {
   name: "AddAccountCard",
   data() {
     return {
-      countryList: contry,
+      countryList: country,
       formItem: {
         avatarPath: "",
         UID: "",
