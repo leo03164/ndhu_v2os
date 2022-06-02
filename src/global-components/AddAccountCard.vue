@@ -33,7 +33,7 @@
         <FormItem>
           <div class="button-group">
             <Button type="primary" @click="submit">Submit</Button>
-            <Button style="margin-left: 8px" @click="cancel">Cancel</Button>
+            <Button @click="cancel">Cancel</Button>
           </div>
         </FormItem>
       </div>
@@ -111,5 +111,9 @@ export default {
 .button-group {
   display: flex;
   justify-content: flex-end;
+}
+
+Button + Button {
+  margin-left: 8px;
 }
 </style>
