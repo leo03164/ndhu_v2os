@@ -199,7 +199,7 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
 .card-group {
   display: flex;
   justify-content: space-between;

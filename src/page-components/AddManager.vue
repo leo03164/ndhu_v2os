@@ -136,7 +136,7 @@ export default {
 };
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
 .small-card {
   min-width: 330px;
   min-height: 184px;

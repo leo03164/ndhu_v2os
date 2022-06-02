@@ -102,7 +102,7 @@ export default {
   }
 };
 </script>
-<style lang="postcss" scoped>
+<style scoped>
 .createFormContainer {
   width: 450px;
   border-radius: 15px;
