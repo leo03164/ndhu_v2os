@@ -65,8 +65,6 @@ export default {
           await this.contract.methods
             .transferShoesToContract(this.shoesId, this.price, "Taiwan")
             .send({ type: "0x2" });
-        } else {
-          console.log("transferHandler error");
         }
         this.close();
       } catch (error) {
