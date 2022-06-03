@@ -1,5 +1,5 @@
 <template>
-  <div class="createFormContainer">
+  <div class="create-form-container">
     <Form :model="formItem" :label-width="80">
       <div class="upload-container">
         <ImageUpload @setImageIpfsPath="setImageIpfsPath"></ImageUpload>
@@ -103,7 +103,7 @@ export default {
 };
 </script>
 <style scoped>
-.createFormContainer {
+.create-form-container {
   width: 450px;
   border-radius: 15px;
   box-sizing: border-box;
