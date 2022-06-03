@@ -50,7 +50,7 @@
 </template>
 <script>
 import company from "@/assets/shoes/company.json";
-import contry from "@/assets/shoes/country.json";
+import country from "@/assets/shoes/country.json";
 import ImageUpload from "@/global-components/ImageUpload.vue";
 import { mapState } from "vuex";
 
@@ -58,7 +58,7 @@ export default {
   data() {
     return {
       companyList: company,
-      countryList: contry,
+      countryList: country,
       formItem: {
         sn: "",
         name: "",
