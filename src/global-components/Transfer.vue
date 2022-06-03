@@ -35,7 +35,10 @@ import { getShoesIdByAttribute } from "@/utils";
 export default {
   name: "Transfer",
   props: {
-    product: Object
+    product: {
+      type: Object,
+      default: null
+    }
   },
   components: {
     ActionSheet
