@@ -18,7 +18,10 @@ import { mapState } from "vuex";
 export default {
   name: "RandomValue",
   props: {
-    shoesId: String
+    shoesId: {
+      type: String,
+      default: ""
+    }
   },
   components: {
     ActionSheet
