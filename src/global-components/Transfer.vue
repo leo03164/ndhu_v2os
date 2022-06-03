@@ -16,7 +16,7 @@
         <Input v-model="buyer" placeholder="請輸入購買者位址"></Input>
       </FormItem>
 
-      <FormItem label="販售價格" v-if="mode === 'proxy'">
+      <FormItem label="販售價格" v-else>
         <Input
           v-model="price"
           placeholder="請輸入欲販售金額"
