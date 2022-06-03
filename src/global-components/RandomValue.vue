@@ -66,7 +66,8 @@ export default {
     }
   },
   async created() {
-    this.randomValue = await this.randomFunction(12);
+    const MAX_RANDOM_LENGTH = 12;
+    this.randomValue = await this.randomFunction(MAX_RANDOM_LENGTH);
   }
 };
 </script>
