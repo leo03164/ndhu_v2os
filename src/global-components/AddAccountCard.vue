@@ -62,7 +62,10 @@ export default {
     ImageUpload
   },
   props: {
-    title: String
+    title: {
+      type: String,
+      default: ""
+    }
   },
   methods: {
     async submit() {
