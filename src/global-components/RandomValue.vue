@@ -40,7 +40,6 @@ export default {
   methods: {
     async setRandomValue() {
       const rvHash = await web3.utils.soliditySha3(this.randomValue);
-      console.log(rvHash);
       try {
         await this.contract.methods
           .setShoesRandomValue(this.shoesId, rvHash)
