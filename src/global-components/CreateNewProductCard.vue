@@ -21,9 +21,12 @@
             placeholder="Select product company"
             not-found-text="Company not found"
           >
-            <Option v-for="data in companyList" :key="data" :value="data">{{
-              data
-            }}</Option>
+            <Option
+              v-for="company in companyList"
+              :key="company"
+              :value="company"
+              >{{ company }}</Option
+            >
           </Select>
         </FormItem>
         <FormItem label="Country">
@@ -33,9 +36,12 @@
             placeholder="Select product country"
             not-found-text="Country not found"
           >
-            <Option v-for="data in countryList" :key="data" :value="data">{{
-              data
-            }}</Option>
+            <Option
+              v-for="country in countryList"
+              :key="country"
+              :value="country"
+              >{{ country }}</Option
+            >
           </Select>
         </FormItem>
         <FormItem>

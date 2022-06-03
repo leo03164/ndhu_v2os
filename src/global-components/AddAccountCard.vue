@@ -25,9 +25,12 @@
             :placeholder="`Select ${title} country`"
             not-found-text="Country not found"
           >
-            <Option v-for="data in countryList" :key="data" :value="data">{{
-              data
-            }}</Option>
+            <Option
+              v-for="country in countryList"
+              :key="country"
+              :value="country"
+              >{{ country }}</Option
+            >
           </Select>
         </FormItem>
         <FormItem>
