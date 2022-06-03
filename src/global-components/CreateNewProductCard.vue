@@ -125,7 +125,6 @@ export default {
 .upload-container {
   width: 100%;
   height: 150px;
-  /* border-bottom: 1px solid #707070; */
   box-shadow: 2px 3px 5px 0px #e2e2e2;
 }
 .button-group {
