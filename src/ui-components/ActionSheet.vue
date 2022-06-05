@@ -1,6 +1,6 @@
 <template>
-  <div class="createFormContainer">
-    <div class="formTitle">{{ title }}</div>
+  <div class="create-form-container">
+    <div class="form-title">{{ title }}</div>
     <Form :label-width="80">
       <div class="input-form">
         <slot></slot>
@@ -34,7 +34,7 @@ export default {
 };
 </script>
 <style scoped>
-.createFormContainer {
+.create-form-container {
   width: 450px;
   border-radius: 15px;
   box-sizing: border-box;
@@ -50,7 +50,7 @@ export default {
 
   box-shadow: 3px 3px 2px rgba(0, 0, 0, 0.3);
 }
-.formTitle {
+.form-title {
   text-align: center;
   font-size: 24px;
 }
