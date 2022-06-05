@@ -11,12 +11,16 @@
 <script>
 export default {
   name: "SmallCard",
-  data() {
-    return {};
-  },
-  props: ["title", "number"],
-  methods: {},
-  component: {}
+  props: {
+    title: {
+      type: String,
+      default: ""
+    },
+    number: {
+      type: Number,
+      default: 0
+    }
+  }
 };
 </script>
 

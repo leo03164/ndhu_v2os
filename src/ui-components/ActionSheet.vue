@@ -18,10 +18,10 @@
 export default {
   name: "ActionSheet",
   props: {
-    title: String
-  },
-  data() {
-    return {};
+    title: {
+      type: String,
+      default: ""
+    }
   },
   methods: {
     submit() {
