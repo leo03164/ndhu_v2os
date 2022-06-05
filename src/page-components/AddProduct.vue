@@ -149,7 +149,6 @@ export default {
 }
 .table-card {
   min-width: 1050px;
-  /* min-height: 740px; */
   margin-top: 35px;
   border-radius: 20px;
   background-color: #fff;

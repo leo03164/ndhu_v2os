@@ -138,7 +138,6 @@ export default {
 }
 .table-card {
   min-width: 1050px;
-  /* min-height: 740px; */
   margin-top: 35px;
   border-radius: 20px;
   background-color: #fff;
@@ -163,16 +162,6 @@ export default {
 }
 .add-product-container >>> .ivu-card-bordered {
   border: none;
-}
-.add-icon {
-  position: fixed;
-  bottom: 10px;
-  right: 30px;
-  opacity: 0.5;
-}
-.add-icon:hover {
-  transition: all 0.2s ease-in-out;
-  opacity: 1;
 }
 .mg-t-n5 {
   margin-top: -5px;

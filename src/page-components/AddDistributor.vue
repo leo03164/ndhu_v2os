@@ -161,19 +161,8 @@ export default {
   display: flex;
   justify-content: space-evenly;
 }
-.small-card-title {
-  font-size: 24px;
-  color: #a9a9a9;
-  margin: 0.75rem 0 0 2rem;
-}
-.small-card-content {
-  font-size: 64px;
-  color: #000000;
-  text-align: center;
-}
 .table-card {
   min-width: 1050px;
-  /* min-height: 740px; */
   margin-top: 35px;
   border-radius: 20px;
   background-color: #fff;

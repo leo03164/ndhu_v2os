@@ -217,7 +217,6 @@ export default {
 }
 .table-card {
   min-width: 1050px;
-  /* min-height: 740px; */
   margin-top: 35px;
   border-radius: 20px;
   background-color: #fff;
@@ -276,7 +275,6 @@ export default {
 }
 .upload-container {
   width: 150px;
-  /* height: 150px; */
   box-shadow: 2px 3px 5px 0px #e2e2e2;
 }
 .reason-container {
