@@ -1,13 +1,6 @@
 <template>
   <div class="add-product-container">
-    <Card
-      class="main-container"
-      :style="{
-        minHeight: '100vh',
-        width: '100%',
-        background: '#F8F9FA'
-      }"
-    >
+    <Card class="main-container">
       <div class="card-group">
         <SmallCard :title="'經銷商上限'" :number="100"> </SmallCard>
         <SmallCard :title="'今日新增'" :number="distributorCount"> </SmallCard>
@@ -151,11 +144,10 @@ export default {
 </script>
 
 <style scoped>
-.small-card {
-  min-width: 330px;
-  min-height: 184px;
-  border-radius: 30px;
-  background-color: #fff;
+.main-container {
+  min-height: "100vh";
+  width: "100%";
+  background: "#F8F9FA";
 }
 .card-group {
   display: flex;

@@ -1,13 +1,6 @@
 <template>
   <div class="add-product-container">
-    <Card
-      class="main-container"
-      :style="{
-        minHeight: '100vh',
-        width: '100%',
-        background: '#F8F9FA'
-      }"
-    >
+    <Card class="main-container">
       <div class="card-group">
         <SmallCard
           :title="card.title"
@@ -143,6 +136,11 @@ export default {
 </script>
 
 <style scoped>
+.main-container {
+  min-height: "100vh";
+  width: "100%";
+  background: "#F8F9FA";
+}
 .card-group {
   display: flex;
   justify-content: space-between;
